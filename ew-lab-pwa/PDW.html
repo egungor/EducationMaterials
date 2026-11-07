@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PDW Ayrıştırma Eğitimi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: saha el kitabı — ızgaralı teknik kağıt; cihazlar kağıda gömülü karanlık ekranlar */
+:root{
+  --paper:#EDEFEC;
+  --panel:#FBFBF9;
+  --ink:#141C23;
+  --muted:#55626C;
+  --line:#C6CDCF;
+  --grid:rgba(29,78,216,.06);
+  --accent:#1D4ED8;
+  --accent-soft:#DCE5FB;
+  --es:#0B7A66;
+  --es-soft:#D5EFE8;
+  --elint:#6B3FC4;
+  --elint-soft:#E7DEF8;
+  --ok:#1E7B3A;
+  --ok-soft:#DBF0DF;
+  --bad:#B4322A;
+  --bad-soft:#F8DEDB;
+  --scope:#0A100E;
+  --scope-line:#1E3029;
+  --phos:#F5A524;
+  --phos-dim:#8A5C17;
+  --display:"Chakra Petch","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1317;--panel:#151C22;--ink:#E2E7EA;--muted:#94A1AA;--line:#2A353D;--grid:rgba(110,149,255,.05);
+    --accent:#7C9DFF;--accent-soft:#1D2A4D;--es:#44C7AA;--es-soft:#10302A;--elint:#AC90F2;--elint-soft:#271D3F;
+    --ok:#5BC777;--ok-soft:#14301C;--bad:#F07A6F;--bad-soft:#3A1916;--scope:#050807;--scope-line:#1A2A24;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1317;--panel:#151C22;--ink:#E2E7EA;--muted:#94A1AA;--line:#2A353D;--grid:rgba(110,149,255,.05);
+  --accent:#7C9DFF;--accent-soft:#1D2A4D;--es:#44C7AA;--es-soft:#10302A;--elint:#AC90F2;--elint-soft:#271D3F;
+  --ok:#5BC777;--ok-soft:#14301C;--bad:#F07A6F;--bad-soft:#3A1916;--scope:#050807;--scope-line:#1A2A24;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:110px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  margin:0;background-color:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(2.1rem,7vw,3.6rem);font-weight:700;letter-spacing:-.01em}
+h2{font-size:clamp(1.5rem,4.5vw,2.1rem);font-weight:600}
+h3{font-size:1.15rem;font-weight:600}
+p{margin:0}
+.wrap{max-width:980px;margin:0 auto;padding:0 18px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* header */
+.top{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
+.top-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0 6px}
+.brand{font-family:var(--display);font-weight:700;font-size:1.05rem;letter-spacing:.04em}
+.brand b{color:var(--es)} .brand i{font-style:normal;color:var(--elint)}
+.prog{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted)}
+.prog-bar{display:flex;gap:3px}
+.prog-bar span{width:14px;height:8px;border:1px solid var(--line);background:transparent}
+.prog-bar span.on{background:var(--accent);border-color:var(--accent)}
+.nav{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav a{flex:none;text-decoration:none;color:var(--ink);font-size:.85rem;border:1px solid var(--line);padding:4px 10px;background:var(--panel);display:flex;gap:6px;align-items:center}
+.nav a .n{font-family:var(--mono);color:var(--muted);font-size:.75rem}
+.nav a.done{border-color:var(--accent)}
+.nav a.done .n{color:var(--accent)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:center;padding:36px 0 28px}
+.hero .kick{font-family:var(--mono);font-size:.8rem;color:var(--muted);letter-spacing:.06em;margin-bottom:10px}
+.hero h1 span{display:block}
+.hero h1 .es{color:var(--es)} .hero h1 .el{color:var(--elint)}
+.hero p.lead{margin-top:14px;max-width:52ch;color:var(--muted);font-size:1.05rem}
+.scope-box{background:var(--scope);padding:14px;border:1px solid var(--line)}
+.scope-box canvas{display:block;width:100%;height:auto}
+.scope-cap{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.72rem;color:var(--phos-dim);margin-top:8px}
+@media (max-width:720px){.hero{grid-template-columns:minmax(0,1fr);gap:20px;padding-top:24px}}
+
+/* modules */
+section.mod{padding:30px 0 34px;border-top:1px solid var(--line)}
+.mod-head{display:flex;gap:14px;align-items:baseline;margin-bottom:6px}
+.mod-num{font-family:var(--mono);font-size:.85rem;color:var(--accent);border:1px solid var(--accent);padding:1px 6px}
+.mod-intro{color:var(--muted);max-width:65ch;margin:6px 0 20px}
+.panel{background:var(--panel);border:1px solid var(--line);padding:18px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:720px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.tag{display:inline-block;font-family:var(--mono);font-size:.72rem;padding:1px 7px;letter-spacing:.04em}
+.tag.es{background:var(--es-soft);color:var(--es)}
+.tag.el{background:var(--elint-soft);color:var(--elint)}
+.tag.both{background:var(--accent-soft);color:var(--accent)}
+.btn{border:1px solid var(--ink);background:var(--ink);color:var(--paper);padding:8px 16px;font-weight:500}
+.btn:hover{opacity:.88}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--ink)}
+.btn.warn{background:var(--bad);border-color:var(--bad);color:#fff}
+.note{font-size:.88rem;color:var(--muted)}
+.err{font-size:.85rem;color:var(--bad);min-height:1.3em;margin-top:6px}
+.fb{margin-top:10px;padding:10px 12px;font-size:.92rem;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--ok-soft);color:var(--ok)}
+.fb.bad{background:var(--bad-soft);color:var(--bad)}
+
+/* m1 tree */
+.tree{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:720px){.tree{grid-template-columns:minmax(0,1fr)}}
+.fam{border:1px solid var(--line);background:var(--panel);padding:14px}
+.fam h3{font-size:1rem;margin-bottom:4px}
+.fam .sub{font-size:.85rem;color:var(--muted);margin-bottom:12px}
+.kids{display:flex;gap:8px;flex-wrap:wrap}
+.kid{flex:1;min-width:84px;border:1px solid var(--line);padding:8px;font-size:.82rem;color:var(--muted)}
+.kid b{display:block;font-family:var(--display);font-size:1.05rem;color:var(--ink)}
+.kid.es{border-color:var(--es);background:var(--es-soft)} .kid.es b{color:var(--es)}
+.kid.el{border-color:var(--elint);background:var(--elint-soft)} .kid.el b{color:var(--elint)}
+.cycle{margin-top:18px}
+.cycle-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:12px}
+.cycle-steps button{border:1px solid var(--line);background:var(--panel);padding:8px 6px;font-size:.8rem;text-align:left;line-height:1.3}
+.cycle-steps button .k{display:block;font-family:var(--mono);font-size:.7rem;color:var(--muted)}
+.cycle-steps button.on{border-color:var(--accent);background:var(--accent-soft)}
+.cycle-body{min-height:84px}
+.cmp{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:18px}
+.cmp th,.cmp td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+.cmp th{font-family:var(--mono);font-weight:500;font-size:.75rem;color:var(--muted)}
+.cmp td:first-child{color:var(--muted);width:28%}
+.tbl-wrap{overflow-x:auto}
+
+/* m2 */
+.ctl{display:grid;grid-template-columns:84px minmax(0,1fr) 52px;gap:10px;align-items:center;margin-bottom:10px}
+.ctl label{font-size:.88rem;color:var(--muted)}
+.ctl output{font-family:var(--mono);font-size:.9rem;text-align:right}
+input[type=range]{width:100%;accent-color:var(--accent)}
+select{border:1px solid var(--line);background:var(--panel);padding:6px 8px}
+input[type=number]{border:1px solid var(--line);background:var(--panel);padding:6px 8px;width:120px}
+.canvas-box{background:var(--scope);border:1px solid var(--line);padding:10px;margin:12px 0}
+.canvas-box canvas{display:block;width:100%}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.stat{border:1px solid var(--line);padding:10px 12px;background:var(--panel)}
+.stat .l{font-size:.78rem;color:var(--muted)}
+.stat .v{font-family:var(--mono);font-size:1.2rem;font-variant-numeric:tabular-nums}
+.stat .f{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.interp{margin-top:12px;border-left:3px solid var(--accent);padding:6px 0 6px 12px;font-size:.92rem}
+
+/* m3 */
+.sim{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:720px){.sim{grid-template-columns:minmax(0,1fr)}}
+.rwr{background:var(--scope);border:1px solid var(--line);padding:12px}
+.rwr canvas{display:block;width:100%;height:auto}
+.rwr-bar{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.rwr-bar .btn{flex:1}
+.clock{font-family:var(--mono);color:var(--phos);font-size:.8rem;display:flex;justify-content:space-between;margin-top:8px}
+.log{background:var(--scope);color:#B7C7BF;font-family:var(--mono);font-size:.74rem;line-height:1.5;padding:10px;height:220px;overflow-y:auto;border:1px solid var(--line)}
+.log .w{color:var(--phos)} .log .r{color:#FF7B6E} .log .g{color:#6FDCA0} .log .u{color:#C7A8FF}
+.lib{width:100%;border-collapse:collapse;font-size:.8rem}
+.lib th,.lib td{border-bottom:1px solid var(--line);padding:6px 4px;text-align:left}
+.lib th{font-family:var(--mono);font-weight:500;color:var(--muted);font-size:.7rem}
+.lib td.s{font-family:var(--mono);font-weight:500;color:var(--accent)}
+.lib tr.new td{background:var(--elint-soft)}
+.result{margin-top:12px;padding:12px;border:1px solid var(--line);display:none}
+.result.show{display:block}
+
+/* m4 */
+.steps{display:flex;flex-direction:column;gap:14px}
+.step{background:var(--panel);border:1px solid var(--line);padding:16px}
+.step-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.step-h .st{font-family:var(--mono);font-size:.72rem;padding:1px 7px;border:1px solid var(--line);color:var(--muted)}
+.step-h .st.ok{border-color:var(--ok);color:var(--ok);background:var(--ok-soft)}
+.raw{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.78rem;font-variant-numeric:tabular-nums}
+.raw th,.raw td{border-bottom:1px solid var(--line);padding:4px 6px;text-align:right}
+.raw th{color:var(--muted);font-weight:500}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.opt{border:1px solid var(--line);background:var(--panel);padding:7px 12px;font-size:.9rem}
+.opt:hover{border-color:var(--ink)}
+.opt.ok{border-color:var(--ok);background:var(--ok-soft);color:var(--ok)}
+.opt.bad{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
+.guide{border:1px dashed var(--elint);padding:12px 14px;font-size:.86rem;background:var(--panel)}
+.guide li{margin:3px 0}
+.guide ul{margin:6px 0 0;padding-left:18px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+/* m5 */
+.sort{display:flex;flex-direction:column;gap:8px}
+.card{background:var(--panel);border:1px solid var(--line);padding:12px 14px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+.card.ok{border-left:4px solid var(--ok)} .card.bad{border-left:4px solid var(--bad)}
+.card .why{grid-column:1/-1;font-size:.84rem;color:var(--muted);display:none}
+.card.ok .why,.card.bad .why{display:block}
+.pick{display:flex;gap:4px}
+.pick button{border:1px solid var(--line);background:transparent;padding:4px 9px;font-size:.78rem;font-family:var(--mono)}
+.pick button.sel-ok{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.pick button.sel-bad{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.pick button.ans{border-color:var(--ok);color:var(--ok)}
+.score{font-family:var(--mono);font-size:.9rem;margin-bottom:10px}
+@media (max-width:520px){.card{grid-template-columns:minmax(0,1fr)}}
+
+/* m6 */
+.quiz{max-width:680px}
+.q-meta{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.8rem;color:var(--muted);margin-bottom:8px}
+.q-text{font-size:1.1rem;font-weight:500;margin-bottom:12px}
+.q-opts{display:flex;flex-direction:column;gap:8px}
+.q-opts button{text-align:left;border:1px solid var(--line);background:var(--panel);padding:10px 12px}
+.q-opts button:hover{border-color:var(--ink)}
+.q-opts button.ok{border-color:var(--ok);background:var(--ok-soft);color:var(--ok)}
+.q-opts button.bad{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
+.big{font-family:var(--display);font-size:3rem;font-weight:700}
+footer{padding:28px 0 40px;color:var(--muted);font-size:.82rem;border-top:1px solid var(--line)}
+
+.brand b{color:var(--accent)} .brand i{color:var(--es)}
+.hero h1 .ac{color:var(--accent)}
+.tech{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px}
+.tech div{background:var(--panel);border:1px solid var(--line);padding:10px 12px;font-size:.88rem}
+.tech b{display:block;font-family:var(--display);font-size:1rem;margin-bottom:2px}
+.opt.sel{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.pipe{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin-bottom:12px}
+.pipe button{border:1px solid var(--line);background:var(--panel);padding:8px 6px;font-size:.78rem;text-align:left;line-height:1.25}
+.pipe button .k{display:block;font-family:var(--mono);font-size:.68rem;color:var(--muted)}
+.pipe button.on{border-color:var(--accent);background:var(--accent-soft)}
+.pipe button.seen .k{color:var(--accent)}
+@media (max-width:620px){.pipe{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.fields{width:100%;border-collapse:collapse;font-size:.86rem}
+.fields th,.fields td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left;vertical-align:top}
+.fields th{font-family:var(--mono);font-weight:500;font-size:.72rem;color:var(--muted)}
+.fields td:first-child{font-family:var(--mono);font-weight:500;color:var(--accent);white-space:nowrap}
+.sw{display:inline-block;width:10px;height:10px;margin-right:6px;vertical-align:middle}
+.cl{width:100%;border-collapse:collapse;font-size:.82rem;font-variant-numeric:tabular-nums}
+.cl th,.cl td{border-bottom:1px solid var(--line);padding:6px 5px;text-align:left}
+.cl th{font-family:var(--mono);font-weight:500;font-size:.7rem;color:var(--muted)}
+.cl td.n{font-family:var(--mono)}
+.pill{font-family:var(--mono);font-size:.7rem;padding:1px 6px;border:1px solid var(--line)}
+.pill.ok{border-color:var(--ok);color:var(--ok);background:var(--ok-soft)}
+.pill.bad{border-color:var(--bad);color:var(--bad);background:var(--bad-soft)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.toolbar .lbl{font-size:.85rem;color:var(--muted);margin-right:2px}
+.toolbar .opts{margin-top:0}
+.peaks{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.peaks span{font-family:var(--mono);font-size:.78rem;padding:2px 8px;border:1px solid var(--accent);color:var(--accent);background:var(--accent-soft)}
+.peaks span.h{border-color:var(--line);color:var(--muted);background:transparent}
+.game{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
+.gcard{background:var(--panel);border:1px solid var(--line);padding:12px}
+.gcard canvas{display:block;width:100%;background:var(--scope);margin-bottom:8px}
+.gcard .opts{gap:6px;margin-top:6px}
+.gcard .opt{padding:5px 9px;font-size:.8rem}
+.s3d-wrap{margin-top:18px}
+.canvas-box.s3d{position:relative;padding:0}
+.s3d canvas{display:block;width:100%;touch-action:pan-y;cursor:grab}
+.s3d-hint{position:absolute;left:10px;top:8px;font-family:var(--mono);font-size:.7rem;color:#8A5C17;pointer-events:none}
+.s3d .legend{padding:0 10px 10px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.78rem;color:#B7C7BF;margin-top:6px;font-family:var(--mono)}
+.legend span::before{content:"";display:inline-block;width:12px;height:3px;margin-right:6px;vertical-align:middle;background:currentColor}
+.s3d-ctl{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 12px}
+.s3d-ctl button{border:1px solid var(--line);background:var(--panel);padding:5px 10px;font-size:.82rem}
+.badge3d{font-family:var(--mono);font-size:.7rem;border:1px solid var(--accent);color:var(--accent);padding:0 6px;margin-left:6px;vertical-align:middle;font-weight:500}
+.brand,#progTxt{white-space:nowrap}
+#resTable{min-width:600px}
+.plog{background:var(--scope);color:#B7C7BF;font-family:var(--mono);font-size:.76rem;line-height:1.55;padding:10px;border:1px solid var(--line);min-height:120px}
+.plog .g{color:#6FDCA0} .plog .w{color:#F5A524} .plog .r{color:#FF7B6E}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="top-row">
+      <div class="brand"><b>PDW</b> <i>AYRIŞTIRMA</i></div>
+      <div class="prog"><span id="progTxt">0/7 modül</span><div class="prog-bar" id="progBar"></div></div>
+    </div>
+    <nav class="nav" id="nav">
+      <a href="#pdw" data-m="m1"><span class="n">01</span>PDW ve süreç</a>
+      <a href="#kumeleme" data-m="m2"><span class="n">02</span>Kümeleme</a>
+      <a href="#histogram" data-m="m3"><span class="n">03</span>Fark histogramları</a>
+      <a href="#dizi" data-m="m4"><span class="n">04</span>Dizi arama</a>
+      <a href="#pri-tipleri" data-m="m5"><span class="n">05</span>PRI tipleri</a>
+      <a href="#laboratuvar" data-m="m6"><span class="n">06</span>Laboratuvar</a>
+      <a href="#sinav" data-m="m7"><span class="n">07</span>Sınav</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<div class="hero">
+  <div>
+    <div class="kick">ELEKTRONİK DESTEK · SİNYAL İŞLEME</div>
+    <h1><span>Karışık darbelerden</span><span><span class="ac">ayrı radarlara.</span></span></h1>
+    <p class="lead">Bir ES alıcısına aynı anda onlarca radarın darbeleri tek bir akış halinde gelir. Darbe ayrıştırma (deinterleaving), bu akışı her darbenin ölçülen parametrelerine ve zamanlamasına bakarak radarlara ayırma işidir. Yedi modülde her adımı kendin çalıştıracaksın.</p>
+  </div>
+  <div class="scope-box" aria-label="Karışık darbe akışının radarlara ayrılması animasyonu">
+    <canvas id="heroC" height="260"></canvas>
+    <div class="scope-cap"><span>12 ms · 4 RADAR</span><span id="heroStat">KARIŞIK AKIŞ</span></div>
+  </div>
+</div>
+
+<!-- M1 -->
+<section class="mod" id="pdw">
+  <div class="mod-head"><span class="mod-num">01</span><h2>PDW nedir, neden ayrıştırılır?</h2></div>
+  <p class="mod-intro">Alıcı her darbeyi ölçer ve sonucu bir PDW'ye (Pulse Descriptor Word, darbe tanımlayıcı kelime) yazar. Bu noktadan sonra sistem dalga biçimiyle değil, PDW listesiyle çalışır. PDW'de "bu darbe hangi radara ait" bilgisi yoktur; bunu bulmak ayrıştırmanın işidir.</p>
+
+  <div class="grid2">
+    <div class="canvas-box" style="margin:0"><canvas id="anatC" height="210"></canvas></div>
+    <div class="tbl-wrap">
+      <table class="fields">
+        <thead><tr><th>ALAN</th><th>ANLAMI</th><th>AYRIŞTIRMADAKİ ROLÜ</th></tr></thead>
+        <tbody>
+          <tr><td>TOA</td><td>Geliş zamanı (ön kenar)</td><td>PRI analizinin tek girdisi</td></tr>
+          <tr><td>RF</td><td>Taşıyıcı frekans</td><td>Güçlü ayırıcı, ama çevik radarlarda değişir</td></tr>
+          <tr><td>PW</td><td>Darbe genişliği</td><td>Yardımcı ayırıcı</td></tr>
+          <tr><td>AOA</td><td>Geliş açısı</td><td>En güvenilir ayırıcı: radar yönünü hızla değiştiremez</td></tr>
+          <tr><td>PA</td><td>Darbe genliği</td><td>Tarama deseni analizinde kullanılır</td></tr>
+          <tr><td>MOP</td><td>Darbe içi modülasyon bayrağı</td><td>Varsa ek ayırıcı (ör. çırp, faz kodu)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3 style="margin:24px 0 6px">Alıcının gördüğü akış</h3>
+  <p class="note" style="margin-bottom:10px">Aşağıda 40 ms'lik senaryonun ilk 8 ms'i var. Alıcı darbeleri yalnızca gri çizgiler olarak görür. Düğmeye bas ve gerçekte hangi darbenin hangi radara ait olduğunu gör.</p>
+  <div class="canvas-box"><canvas id="streamC" height="130"></canvas></div>
+  <div class="row" style="margin-bottom:6px"><button class="btn ghost" id="truthStream">Gerçek kaynakları göster</button><span class="note mono" id="streamStat"></span></div>
+
+  <h3 style="margin:24px 0 8px">Ayrıştırmayı zorlaştıranlar</h3>
+  <div class="tech">
+    <div><b>Yoğunluk</b>Kalabalık bir ortamda saniyede yüz binlerce, hatta milyonlarca darbe gelebilir. Algoritma hızlı olmak zorundadır.</div>
+    <div><b>Parametre örtüşmesi</b>Aynı bölgedeki iki radar aynı yönde, aynı bantta ve aynı darbe genişliğinde olabilir.</div>
+    <div><b>Kayıp ve sahte darbeler</b>Zayıf darbeler kaçırılır, çakışan darbeler bozuk ölçülür, yansımalar sahte darbe üretir.</div>
+    <div><b>Çevik radarlar</b>Frekansını, PRI'sini veya darbe genişliğini sürekli değiştiren radarlar basit kuralları bozar.</div>
+  </div>
+
+  <h3 style="margin:24px 0 6px">İşleme zinciri</h3>
+  <p class="note" style="margin-bottom:10px">Altı adımın hepsine dokun. Modüller bu sırayı izler.</p>
+  <div class="pipe" id="pipe"></div>
+  <div class="panel" id="pipeBody" style="min-height:96px"></div>
+</section>
+
+<!-- M2 -->
+<section class="mod" id="kumeleme">
+  <div class="mod-head"><span class="mod-num">02</span><h2>Ön sınıflandırma: parametrelere göre kümeleme</h2></div>
+  <p class="mod-intro">İlk adımda darbeler AOA, RF ve PW değerleri birbirine yakın olan gruplara ayrılır. Burada her darbenin komşularına baktığı yoğunluk tabanlı bir yöntem kullanılıyor (DBSCAN benzeri): tolerans kutusunun içinde en az 4 darbe olan bölgeler küme olur, yalnız kalan darbeler gürültü sayılır. Hangi parametrelerin kullanılacağını ve tolerans çarpanını değiştir.</p>
+
+  <div class="toolbar"><span class="lbl">Kullanılan parametreler:</span>
+    <div class="opts" id="featSel"><button class="opt sel" data-f="aoa">AOA</button><button class="opt sel" data-f="rf">RF</button><button class="opt sel" data-f="pw">PW</button></div>
+  </div>
+  <div class="ctl"><label for="tolM">Tolerans çarpanı</label><input type="range" id="tolM" min="0.2" max="3" step="0.1" value="1"><output id="tolMOut" class="mono">1.0×</output></div>
+  <p class="note" id="tolTxt" style="margin-bottom:10px"></p>
+  <div class="toolbar"><span class="lbl">Dikey eksen:</span>
+    <div class="opts" id="ySel"><button class="opt sel" data-y="rf">RF</button><button class="opt" data-y="pw">PW</button></div>
+    <button class="btn ghost" id="truthCl" style="margin-left:auto">Gerçeği göster</button>
+  </div>
+  <div class="canvas-box"><canvas id="scatC" height="260"></canvas></div>
+
+  <div class="stats" style="margin-top:12px">
+    <div class="stat"><div class="l">Bulunan küme</div><div class="v" id="clCount">–</div><div class="f">gerçekte 4 radar var</div></div>
+    <div class="stat"><div class="l">Gürültü sayılan darbe</div><div class="v" id="clNoise">–</div><div class="f">senaryoda 10 sahte darbe var</div></div>
+  </div>
+  <div class="tbl-wrap" style="margin-top:12px"><table class="cl" id="clTable"></table></div>
+  <div class="interp" id="clNote"></div>
+
+  <div class="s3d-wrap">
+    <h3>Parametre uzayı <span class="badge3d">3D</span></h3>
+    <p class="note" style="margin:4px 0 10px">Her nokta bir darbedir: AOA, RF ve PW eksenlerinde. Renkler yukarıdaki kümeleme sonucunu izler. Kümelerin üç boyutta nasıl ayrıştığını görmek için çevir.</p>
+    <div class="canvas-box s3d"><canvas id="k3d"></canvas><div class="s3d-hint">Sürükleyerek çevir</div></div>
+    <div class="s3d-ctl" data-for="k3d"></div>
+  </div>
+</section>
+
+<!-- M3 -->
+<section class="mod" id="histogram">
+  <div class="mod-head"><span class="mod-num">03</span><h2>PRI analizi: TOA fark histogramları</h2></div>
+  <p class="mod-intro">Kümeleme, aynı yöndeki ve aynı banttaki iki radarı ayıramaz. Geriye zamanlama kalır. Fikir basit: bir darbenin TOA'sından sonraki darbelerin TOA'larını çıkar ve bu farkların histogramını çiz. Gerçek bir PRI sürekli tekrarlandığı için histogramda tepe oluşturur, rastgele farklar ise dağılır.</p>
+
+  <div class="toolbar"><span class="lbl">Veri seti:</span>
+    <select id="dsSel">
+      <option value="a">Tek radar · sabit PRI 1000 µs</option>
+      <option value="b" selected>İki radar · 1000 ve 1370 µs</option>
+      <option value="c">Tek radar · stagger 300/400/500 µs</option>
+      <option value="d">Tek radar · jitter 1500 µs ±%10</option>
+      <option value="e">İki radar · %15 kayıp darbe</option>
+    </select>
+  </div>
+  <div class="toolbar"><span class="lbl">Yöntem:</span>
+    <div class="opts" id="hMode"><button class="opt sel" data-m="sdif">SDIF (tek seviye)</button><button class="opt" data-m="cdif">CDIF (kümülatif)</button></div>
+  </div>
+  <div class="ctl"><label for="hLvl">Fark seviyesi c</label><input type="range" id="hLvl" min="1" max="5" step="1" value="1"><output id="hLvlOut" class="mono">1</output></div>
+  <div class="ctl"><label for="hBin">Kutu genişliği</label><input type="range" id="hBin" min="5" max="60" step="5" value="10"><output id="hBinOut" class="mono">10 µs</output></div>
+
+  <p class="note" style="margin:6px 0 6px">Seviye c: her darbe, kendisinden c sonraki darbeyle eşleştirilir. İlk darbeler üzerinde gösterim:</p>
+  <div class="canvas-box" style="margin-top:0"><canvas id="lvlC" height="110"></canvas></div>
+  <div class="canvas-box"><canvas id="histC" height="230"></canvas>
+    <div class="legend"><span style="color:#F5A524">Fark sayısı</span><span style="color:#FF7B6E">Eşik</span></div></div>
+  <div class="note">Eşiği geçen tepeler (gri olanlar daha küçük bir tepenin katı):</div>
+  <div class="peaks" id="peaks"></div>
+  <div class="interp" id="hNote"></div>
+</section>
+
+<!-- M4 -->
+<section class="mod" id="dizi">
+  <div class="mod-head"><span class="mod-num">04</span><h2>Dizi arama ve çıkarma</h2></div>
+  <p class="mod-intro">Histogram yalnızca aday PRI değerleri verir. Hangi darbenin hangi radara ait olduğunu dizi arama bulur: bir başlangıç darbesi seçilir, bir PRI sonrasında tolerans penceresi içinde darbe aranır ve zincir böyle uzatılır. Yeterince uzun zincirler o radarın darbeleri olarak akıştan çıkarılır, kalanlarla devam edilir.</p>
+
+  <div class="toolbar"><span class="lbl">Aranacak PRI:</span>
+    <div class="opts" id="candSel"><button class="opt sel" data-p="1000">1000 µs</button><button class="opt" data-p="1370">1370 µs</button><button class="opt" data-p="2000">2000 µs</button></div>
+  </div>
+  <div class="ctl"><label for="sTol">Tolerans (±µs)</label><input type="range" id="sTol" min="0.1" max="40" step="0.1" value="5"><output id="sTolOut" class="mono">5.0</output></div>
+  <div class="ctl"><label for="sMiss">İzin verilen kayıp</label><input type="range" id="sMiss" min="0" max="3" step="1" value="1"><output id="sMissOut" class="mono">1</output></div>
+  <div class="canvas-box"><canvas id="seqC" height="190"></canvas>
+    <div class="legend"><span style="color:#8A9690">Kalan darbeler</span><span style="color:#6EA8FF">Arama penceresi</span><span style="color:#F5A524">1. çıkarma</span><span style="color:#3FC2A6">2. çıkarma</span></div></div>
+  <div class="row" style="margin-bottom:10px">
+    <button class="btn" id="sStep">Sonraki adım</button>
+    <button class="btn ghost" id="sChain">Sonraki zincir</button>
+    <button class="btn ghost" id="sEnd">Aramayı bitir</button>
+    <button class="btn ghost" id="sReset">Sıfırla</button>
+  </div>
+  <div class="grid2">
+    <div class="plog" id="sLog" aria-live="polite"></div>
+    <div class="stats" style="align-content:start">
+      <div class="stat"><div class="l">Çıkarılan darbe</div><div class="v" id="sOut">0</div><div class="f">bu aramada</div></div>
+      <div class="stat"><div class="l">Kalan darbe</div><div class="v" id="sRest">–</div><div class="f">akışta 2 sahte darbe var</div></div>
+    </div>
+  </div>
+  <div class="interp" id="sNote">Önce 1000 µs ile ara, sonra kalan darbelerde 1370 µs ile ara. Bir de 2000 µs'yi dene: bir PRI'nin katıyla aramak neden tehlikelidir?</div>
+</section>
+
+<!-- M5 -->
+<section class="mod" id="pri-tipleri">
+  <div class="mod-head"><span class="mod-num">05</span><h2>PRI tipini tanıma</h2></div>
+  <p class="mod-intro">Bir radarın darbeleri ayrıldıktan sonra ardışık TOA farklarına bakılarak PRI tipi belirlenir. En kullanışlı iki görsel, PRI'nin darbe sırasına göre grafiği ve PRI histogramıdır. Önce altı tipi incele, sonra bilinmeyen altı radarı tanı.</p>
+
+  <div class="opts" id="typeSel" style="margin-bottom:10px"></div>
+  <div class="grid2">
+    <div><div class="note">PRI – darbe sırası</div><div class="canvas-box" style="margin-top:4px"><canvas id="tySeq" height="170"></canvas></div></div>
+    <div><div class="note">PRI histogramı</div><div class="canvas-box" style="margin-top:4px"><canvas id="tyHist" height="170"></canvas></div></div>
+  </div>
+  <div class="interp" id="tyDesc"></div>
+
+  <h3 style="margin:24px 0 4px">Bilinmeyen radarlar</h3>
+  <p class="note" style="margin-bottom:10px">Her grafik için PRI tipini seç.</p>
+  <div class="score mono" id="gScore">0 / 6 doğru · 0 cevaplandı</div>
+  <div class="game" id="game"></div>
+</section>
+
+<!-- M6 -->
+<section class="mod" id="laboratuvar">
+  <div class="mod-head"><span class="mod-num">06</span><h2>Uçtan uca laboratuvar</h2></div>
+  <p class="mod-intro">Şimdi bütün zincir birlikte çalışıyor: kümeleme, tek yayıcı testi, gerekirse CDIF ile aday PRI bulma ve dizi arama, sonra PRI tipi tanıma. Senaryonun zorluğunu artır ve hangi aşamanın ilk önce bozulduğunu izle.</p>
+
+  <div class="ctl"><label for="pMiss">Kayıp darbe</label><input type="range" id="pMiss" min="0" max="30" step="1" value="0"><output id="pMissOut" class="mono">%0</output></div>
+  <div class="ctl"><label for="pSpur">Sahte darbe</label><input type="range" id="pSpur" min="0" max="80" step="5" value="10"><output id="pSpurOut" class="mono">10</output></div>
+  <div class="ctl"><label for="pAoa">AOA hatası σ</label><input type="range" id="pAoa" min="0.5" max="8" step="0.5" value="1.5"><output id="pAoaOut" class="mono">1.5°</output></div>
+  <div class="ctl"><label for="pTol">Küme toleransı</label><input type="range" id="pTol" min="0.3" max="3" step="0.1" value="1"><output id="pTolOut" class="mono">1.0×</output></div>
+  <div class="row" style="margin:8px 0 12px"><button class="btn" id="pRun">Zinciri çalıştır</button><button class="btn ghost" id="pNew">Yeni rastgele senaryo</button><span class="note mono" id="pSeed"></span></div>
+
+  <div class="plog" id="pLog"></div>
+  <div class="canvas-box"><canvas id="laneC" height="200"></canvas></div>
+  <div class="score mono" id="pScore"></div>
+  <div class="tbl-wrap"><table class="cl" id="resTable"></table></div>
+  <p class="note" style="margin-top:4px">Tablo telefonda yana kaydırılabilir.</p>
+  <div class="interp" id="pNote"></div>
+</section>
+
+<!-- M7 -->
+<section class="mod" id="sinav">
+  <div class="mod-head"><span class="mod-num">07</span><h2>Sınav</h2></div>
+  <p class="mod-intro">10 soru. Geçmek için en az 7 doğru gerekiyor. Her cevaptan sonra açıklama gösterilir.</p>
+  <div class="quiz panel" id="quiz"></div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">Bu uygulama kavramsal eğitim içindir. Kümeleme, CDIF/SDIF ve dizi arama, açık literatürdeki temel yöntemlerin sadeleştirilmiş sürümleridir. Tüm radarlar ve sayılar sentetiktir. İlerlemen yalnızca bu tarayıcıda saklanır. Seri: <a href="https://claude.ai/artifact/NYtHuFrdiFX5EREPtFgYrg" style="color:var(--accent)">EH temelleri</a> · <a href="https://claude.ai/artifact/3JeY5FviVzVPcHwniV58oa" style="color:var(--accent)">ES ve ELINT</a></div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const store={
+  get(k,d){try{const v=localStorage.getItem("pdwegitim."+k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("pdwegitim."+k,JSON.stringify(v))}catch(e){}}
+};
+const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+const PHOS="#F5A524",PHOS_DIM="#8A5C17",GRID="#1F332B",RED="#FF7B6E",PALE="#B7C7BF",BLUE="#6EA8FF";
+const PAL=["#F5A524","#3FC2A6","#AC90F2","#FF7B6E","#6EA8FF","#F28DC0","#97D45B","#E8D36A"];
+const NOISE="#5B6B64",GRAYP="#8A9690";
+const IDS=["m1","m2","m3","m4","m5","m6","m7"];
+let progress=store.get("progress",{});
+function renderProgress(){
+  const n=IDS.filter(i=>progress[i]).length;
+  $("progTxt").textContent=n+"/7 modül";
+  $("progBar").innerHTML=IDS.map(i=>'<span class="'+(progress[i]?"on":"")+'"></span>').join("");
+  document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("done",!!progress[a.dataset.m]));
+}
+function done(id){if(!progress[id]){progress[id]=true;store.set("progress",progress);renderProgress()}}
+renderProgress();
+function fitCanvas(c,h){
+  const dpr=Math.min(2,window.devicePixelRatio||1),w=c.clientWidth||c.parentElement.clientWidth;
+  c.width=Math.round(w*dpr);c.height=Math.round(h*dpr);c.style.height=h+"px";
+  const ctx=c.getContext("2d");ctx.setTransform(dpr,0,0,dpr,0,0);return{ctx,w,h};
+}
+function onResize(fn){let t;window.addEventListener("resize",()=>{clearTimeout(t);t=setTimeout(fn,80)})}
+function tracker(n,id){const s=new Set();return k=>{s.add(k);if(s.size>=n)done(id)}}
+function mono(ctx){ctx.font="11px 'IBM Plex Mono', monospace"}
+function selOpts(box,attr,fn){box.querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>{box.querySelectorAll(".opt").forEach(x=>x.classList.toggle("sel",x===b));fn(b.dataset[attr])}))}
+const fmt=(x,d)=>x.toLocaleString("tr-TR",{minimumFractionDigits:d||0,maximumFractionDigits:d||0});
+const SRC=["R1","R2","R3","R4"];
+
+/* ---------- PDW core algorithms ---------- */
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function gauss(r){let u=0,v=0;while(u===0)u=r();while(v===0)v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+function mean(a){return a.length?a.reduce((s,x)=>s+x,0)/a.length:NaN}
+function median(a){const s=a.slice().sort((x,y)=>x-y);return s[Math.floor(s.length/2)]}
+const DEFS=[
+  {id:"R1",rf:9400,pw:1.0,aoa:45,pa:-50,pri:{t:"sabit",v:1000}},
+  {id:"R2",rf:9405,pw:1.0,aoa:46.5,pa:-56,pri:{t:"sabit",v:1370}},
+  {id:"R3",rf:3050,pw:2.5,aoa:125,pa:-60,pri:{t:"jitter",v:1500,j:0.1}},
+  {id:"R4",rf:5600,pw:0.5,aoa:120,pa:-47,pri:{t:"stagger",v:[300,400,500]}}
+];
+function p0(p){return typeof p.v==="number"?p.v:Array.isArray(p.v)?p.v[0]:p.v0}
+function nextPri(p,k,r){
+  switch(p.t){
+    case"sabit":return p.v;
+    case"jitter":return p.v*(1+(r()*2-1)*p.j);
+    case"stagger":return p.v[k%p.v.length];
+    case"kayan":return p.v0+(p.v1-p.v0)*((k%p.n)/(p.n-1));
+    case"ds":return p.v[Math.floor(k/p.n)%p.v.length];
+    case"sin":return p.v+p.a*Math.sin(2*Math.PI*k/p.n);
+  }
+}
+function gen(defs,T,o){
+  o=Object.assign({miss:0,spur:0,aoaSig:1.5,seed:1},o||{});
+  const r=mulberry(o.seed),P=[];
+  defs.forEach((d,di)=>{
+    let k=0,t=r()*p0(d.pri);
+    const rf=d.rf==null?9400:d.rf,pw=d.pw==null?1:d.pw,aoa=d.aoa==null?45:d.aoa,pa=d.pa==null?-50:d.pa;
+    while(t<T){
+      if(r()>=o.miss)P.push({toa:t+gauss(r)*0.05,rf:rf+gauss(r)*2,pw:Math.max(0.05,pw+gauss(r)*0.03),aoa:(aoa+gauss(r)*o.aoaSig+360)%360,pa:pa+gauss(r),src:di});
+      t+=nextPri(d.pri,k,r);k++;
+    }
+  });
+  for(let i=0;i<o.spur;i++)P.push({toa:r()*T,rf:2000+r()*16000,pw:0.2+r()*4.5,aoa:r()*360,pa:-70+r()*20,src:-1});
+  P.sort((a,b)=>a.toa-b.toa);
+  return P;
+}
+function angd(a,b){const d=Math.abs(a-b)%360;return d>180?360-d:d}
+function cluster(P,use,mult){
+  const tol={rf:15*mult,aoa:5*mult,pw:0.25*mult},n=P.length,any=use.rf||use.aoa||use.pw;
+  const nb=P.map(p=>{const L=[];for(let j=0;j<n;j++){const q=P[j];
+    if(!any||((!use.rf||Math.abs(p.rf-q.rf)<=tol.rf)&&(!use.aoa||angd(p.aoa,q.aoa)<=tol.aoa)&&(!use.pw||Math.abs(p.pw-q.pw)<=tol.pw)))L.push(j)}return L});
+  const lab=new Array(n).fill(-2);let C=0;
+  for(let i=0;i<n;i++){
+    if(lab[i]!==-2)continue;
+    if(nb[i].length<4){lab[i]=-1;continue}
+    lab[i]=C;const q=nb[i].slice();
+    while(q.length){const j=q.pop();if(lab[j]===-1)lab[j]=C;if(lab[j]!==-2)continue;lab[j]=C;if(nb[j].length>=4)q.push(...nb[j])}
+    C++;
+  }
+  return{lab,C};
+}
+function clusterStats(P,lab,C){
+  const S=[];
+  for(let c=0;c<C;c++){
+    const idx=[];lab.forEach((l,i)=>{if(l===c)idx.push(i)});
+    const comp={};idx.forEach(i=>{const s=P[i].src;comp[s]=(comp[s]||0)+1});
+    const top=Object.entries(comp).sort((a,b)=>b[1]-a[1]);
+    S.push({c,idx,n:idx.length,rf:mean(idx.map(i=>P[i].rf)),aoa:mean(idx.map(i=>P[i].aoa)),pw:mean(idx.map(i=>P[i].pw)),comp,
+      real:top.filter(([s,k])=>s!=="-1"&&k>=3).length,purity:top.length?top[0][1]/idx.length:0});
+  }
+  return S;
+}
+function diffHist(t,c,W,maxT,cum){
+  const nb=Math.floor(maxT/W)+1,h=new Array(nb).fill(0),c0=cum?1:c;
+  for(let l=c0;l<=c;l++)for(let i=0;i+l<t.length;i++){const b=Math.floor((t[i+l]-t[i])/W+0.5);if(b<nb)h[b]++}
+  return h;
+}
+const X_SDIF=0.15,X_CDIF=0.15,K_THR=0.5;
+function thrFn(E,c,nb,cum){const x=cum?X_CDIF:X_SDIF,base=cum?x*E:x*(E-c);return b=>base*Math.exp(-b/(K_THR*nb))}
+function findPeaks(h,T,W){
+  const out=[];
+  for(let b=1;b<h.length;b++){
+    if(b*W<100)continue;
+    if(h[b]<=T(b)||h[b]<3)continue;
+    let isMax=true;
+    for(let k=-3;k<=3;k++){if(!k)continue;const v=h[b+k];if(v===undefined)continue;if(v>h[b]||(v===h[b]&&k<0))isMax=false}
+    if(!isMax)continue;
+    let s=0,w=0;for(let k=-1;k<=1;k++){const v=h[b+k];if(v!==undefined){s+=v*(b+k);w+=v}}
+    out.push({b,v:s/w*W,n:h[b]});
+  }
+  out.forEach(p=>{p.harm=out.some(q=>q.v<p.v&&!q.harm&&Math.round(p.v/q.v)>=2&&Math.abs(p.v/q.v-Math.round(p.v/q.v))<0.03)});
+  return out;
+}
+function seqSearch(t,avail,PRI,tol,maxMiss,minLen,steps){
+  const n=t.length,seqs=[];
+  for(let s=0;s<n;s++){
+    if(!avail[s])continue;
+    const chain=[s];let cur=t[s],miss=0,j=s+1;
+    if(steps)steps.push({k:"start",i:s});
+    while(true){
+      const exp=cur+PRI;let best=-1,bd=1e9;
+      for(let m=j;m<n&&t[m]<=exp+tol;m++){if(!avail[m])continue;const d=Math.abs(t[m]-exp);if(d<=tol&&d<bd){bd=d;best=m}}
+      if(best>=0){chain.push(best);cur=t[best];miss=0;j=best+1;if(steps)steps.push({k:"found",i:best,exp,tol,d:bd})}
+      else{
+        if(exp>t[n-1]+tol){if(steps)steps.push({k:"end",exp,tol});break}
+        miss++;if(steps)steps.push({k:"miss",exp,tol,miss});cur=exp;if(miss>maxMiss)break;
+      }
+    }
+    if(chain.length>=minLen){chain.forEach(i=>avail[i]=false);seqs.push(chain);if(steps)steps.push({k:"accept",chain:chain.slice()})}
+    else if(steps)steps.push({k:"reject",chain:chain.slice()});
+  }
+  return seqs;
+}
+function classify(t){
+  if(t.length<5)return null;
+  const d=[];for(let i=1;i<t.length;i++)d.push(t[i]-t[i-1]);
+  const med=median(d);
+  const ones=d.filter(x=>Math.abs(x-med)<=Math.max(2,0.01*med));
+  const mult=d.filter(x=>{const k=Math.round(x/med);return k>=2&&Math.abs(x-k*med)<=Math.max(3,0.01*med*k)});
+  if((ones.length+mult.length)/d.length>=0.85&&ones.length>=mult.length)return{t:"sabit",v:[mean(ones)]};
+  const s=d.slice().sort((a,b)=>a-b),G=[];
+  s.forEach(x=>{const g=G[G.length-1];if(g&&x-g.m<=0.02*g.m){g.a.push(x);g.m=mean(g.a)}else G.push({a:[x],m:x})});
+  const sig=G.filter(g=>g.a.length>=Math.max(4,0.12*d.length)&&(g.a[g.a.length-1]-g.a[0])/g.m<=0.03);
+  const cov=sig.reduce((q,g)=>q+g.a.length,0)/d.length;
+  if(sig.length>=2&&sig.length<=6&&cov>=0.75){
+    const lab=x=>sig.findIndex(g=>Math.abs(x-g.m)<=0.02*g.m),L=sig.length,lb=d.map(lab);
+    let rep=0,tot=0;for(let i=0;i+L<lb.length;i++){if(lb[i]>=0&&lb[i+L]>=0){tot++;if(lb[i]===lb[i+L])rep++}}
+    if(tot&&rep/tot>=0.7){
+      let order=null;
+      for(let i=0;i+L<=d.length;i++){const q=lb.slice(i,i+L);if(q.every(v=>v>=0)&&new Set(q).size===L){order=q;break}}
+      return{t:"stagger",v:(order||sig.map((_,i)=>i)).map(i=>sig[i].m)};
+    }
+  }
+  const base=d.filter(x=>Math.round(x/med)===1);
+  const m=mean(base),sd=Math.sqrt(mean(base.map(x=>(x-m)*(x-m))));
+  if(base.length/d.length>=0.75&&sd/m<0.15)return{t:"jitter",v:[m],j:Math.max(...base.map(x=>Math.abs(x-m)))/m};
+  return null;
+}
+function mkEmitter(P,ids,cl,c){
+  const comp={};ids.forEach(i=>{const s=P[i].src;comp[s]=(comp[s]||0)+1});
+  const top=Object.entries(comp).sort((a,b)=>b[1]-a[1])[0];
+  return{ids,c,type:cl.t,v:cl.v,j:cl.j,rf:mean(ids.map(i=>P[i].rf)),pw:mean(ids.map(i=>P[i].pw)),aoa:mean(ids.map(i=>P[i].aoa)),src:+top[0],purity:top[1]/ids.length};
+}
+function pipeline(P,mult){
+  const {lab,C}=cluster(P,{rf:1,aoa:1,pw:1},mult),res=[],info=[];
+  for(let c=0;c<C;c++){
+    const idx=[];lab.forEach((l,i)=>{if(l===c)idx.push(i)});
+    const t=idx.map(i=>P[i].toa),it={c,n:idx.length};info.push(it);
+    const cl=classify(t);
+    if(cl){it.mode="tek";it.found=1;res.push(mkEmitter(P,idx,cl,c));continue}
+    it.mode="çoklu";
+    const W=10,maxT=3000,h=diffHist(t,4,W,maxT,true),T=thrFn(t.length,4,h.length,true);
+    const pk=findPeaks(h,T,W).filter(p=>!p.harm).map(p=>p.v);
+    it.cands=pk;it.found=0;
+    const avail=t.map(()=>true);
+    pk.forEach(pri=>{
+      const seqs=seqSearch(t,avail,pri,Math.max(3,0.005*pri),2,6);
+      const ids=[].concat(...seqs).sort((a,b)=>a-b);
+      if(ids.length>=6){const sub=ids.map(i=>idx[i]);const c2=classify(sub.map(i=>P[i].toa))||{t:"sabit",v:[pri]};res.push(mkEmitter(P,sub,c2,c));it.found++}
+    });
+    const rest=[];avail.forEach((a,i)=>{if(a)rest.push(idx[i])});
+    it.rest=rest.length;
+    if(rest.length>=5){const c3=classify(rest.map(i=>P[i].toa));if(c3){res.push(mkEmitter(P,rest,c3,c));it.found++;it.rest=0}}
+  }
+  return{lab,C,res,info};
+}
+function judge(e){
+  if(e.src<0||e.purity<0.8)return false;
+  const d=DEFS[e.src].pri;if(d.t!==e.type)return false;
+  if(d.t==="stagger"){const a=d.v.slice().sort((x,y)=>x-y),b=e.v.slice().sort((x,y)=>x-y);return a.length===b.length&&a.every((x,i)=>Math.abs(x-b[i])/x<0.02)}
+  return Math.abs(e.v[0]-d.v)/d.v<(d.t==="jitter"?0.03:0.02);
+}
+
+
+/* ---------- mini 3D engine (canvas) ---------- */
+const TEAL="#3FC2A6";
+const scenes={};
+function Scene3D(id,h,o){
+  const c=$(id),ctx=c.getContext("2d");
+  const s={c,ctx,h,w:300,az:o.az,el:o.el,dist:o.dist,F:300,T:o.target||[0,0,0],auto:!reduce&&o.auto!==false,draw:o.draw,t:0,vis:true,dirty:true,anim:!!o.anim,home:[o.az,o.el,o.dist]};
+  function resize(){const dpr=Math.min(2,window.devicePixelRatio||1);s.w=c.clientWidth||c.parentElement.clientWidth;c.width=Math.round(s.w*dpr);c.height=Math.round(h*dpr);c.style.height=h+"px";ctx.setTransform(dpr,0,0,dpr,0,0);s.F=1.15*Math.min(s.w,h*1.5);s.dirty=true}
+  s.P=(x,y,z)=>{x-=s.T[0];y-=s.T[1];z-=s.T[2];const ca=Math.cos(s.az),sa=Math.sin(s.az),ce=Math.cos(s.el),se=Math.sin(s.el);const x1=x*ca-z*sa,z1=x*sa+z*ca;const y2=y*ce+z1*se,z2=-y*se+z1*ce;const d=s.dist+z2,k=s.F/Math.max(0.2,d);return{x:s.w/2+x1*k,y:h/2-y2*k,d}};
+  s.line=(pts,col,w,a,dash)=>{ctx.globalAlpha=a==null?1:a;ctx.strokeStyle=col;ctx.lineWidth=w||1;ctx.setLineDash(dash||[]);ctx.beginPath();pts.forEach((p,i)=>{const q=s.P(p[0],p[1],p[2]);i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1};
+  s.text=(p,str,col,align)=>{const q=s.P(p[0],p[1],p[2]);ctx.fillStyle=col;ctx.font="11px 'IBM Plex Mono', monospace";ctx.textAlign=align||"center";ctx.textBaseline="middle";ctx.fillText(str,q.x,q.y)};
+  s.dot=(p,r,col)=>{const q=s.P(p[0],p[1],p[2]);ctx.fillStyle=col;ctx.beginPath();ctx.arc(q.x,q.y,r,0,Math.PI*2);ctx.fill();return q};
+  let down=null;
+  c.addEventListener("pointerdown",e=>{down={x:e.clientX,y:e.clientY}});
+  c.addEventListener("pointermove",e=>{if(!down)return;const dx=e.clientX-down.x,dy=e.clientY-down.y;down={x:e.clientX,y:e.clientY};s.az+=dx*0.01;s.el=Math.max(0.03,Math.min(1.5,s.el+dy*0.008));s.dirty=true});
+  ["pointerup","pointercancel","pointerleave"].forEach(ev=>c.addEventListener(ev,()=>{down=null}));
+  window.addEventListener("resize",resize);
+  if("IntersectionObserver" in window){new IntersectionObserver(es=>es.forEach(en=>{s.vis=en.isIntersecting;if(s.vis)s.dirty=true})).observe(c)}
+  resize();
+  function loop(now){
+    if(s.vis&&(s.dirty||s.auto||(s.anim&&!reduce))){
+      if(s.auto)s.az+=0.004;
+      if(!reduce)s.t=now/1000;
+      ctx.clearRect(0,0,s.w,h);
+      try{s.draw(s)}catch(err){console.error(err)}
+      s.dirty=false;
+    }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+  scenes[id]=s;return s;
+}
+
+
+
+/* ---------- scenario ---------- */
+const SCEN=gen(DEFS,40000,{seed:11,spur:10});
+
+/* ---------- hero ---------- */
+(function(){
+  const c=$("heroC");let g=fitCanvas(c,260);onResize(()=>{g=fitCanvas(c,260)});
+  const P=gen(DEFS,12000,{seed:3});
+  function frame(now){
+    const ctx=g.ctx,W=g.w,H=260,x0=34,x1=W-10;ctx.clearRect(0,0,W,H);
+    const ph=reduce?0.9:((now/7000)%1);
+    const topY=18,topH=56,lane=i=>98+i*40,laneH=24;
+    ctx.strokeStyle=GRID;ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(x0,topY+topH);ctx.lineTo(x1,topY+topH);ctx.stroke();
+    for(let i=0;i<4;i++){ctx.beginPath();ctx.moveTo(x0,lane(i)+laneH);ctx.lineTo(x1,lane(i)+laneH);ctx.stroke()}
+    mono(ctx);ctx.textAlign="left";ctx.textBaseline="middle";
+    ctx.fillStyle=PHOS_DIM;ctx.fillText("ES",4,topY+topH/2);
+    const sep=Math.max(0,Math.min(1,(ph-0.4)/0.35)),e=sep<0.5?2*sep*sep:1-Math.pow(-2*sep+2,2)/2,colorOn=ph>0.25;
+    for(let i=0;i<4;i++){ctx.fillStyle=colorOn?PAL[i]:PHOS_DIM;ctx.globalAlpha=sep>0.05?1:0.35;ctx.fillText(SRC[i],4,lane(i)+laneH/2)}ctx.globalAlpha=1;
+    P.forEach(p=>{
+      const x=x0+p.toa/12000*(x1-x0);
+      const y0=topY,h0=topH,y1=lane(p.src),h1=laneH;
+      const y=y0+(y1-y0)*e,h=h0+(h1-h0)*e;
+      ctx.fillStyle=colorOn?PAL[p.src]:GRAYP;ctx.fillRect(x,y,2,h);
+    });
+    $("heroStat").textContent=ph<0.25?"KARIŞIK AKIŞ":ph<0.4?"KAYNAKLAR BELİRLENDİ":ph<0.75?"AYRIŞTIRILIYOR":"4 RADAR AYRILDI";
+    if(!reduce)requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* ---------- M1 ---------- */
+(function(){
+  const c=$("anatC");let g=fitCanvas(c,210);
+  function draw(){
+    const ctx=g.ctx,W=g.w,H=210;ctx.clearRect(0,0,W,H);
+    const x0=40,x1=W-30,base=150,top=40,rise=14,a=x0+30,b=x1-50;
+    ctx.strokeStyle=GRID;ctx.beginPath();ctx.moveTo(14,base);ctx.lineTo(W-10,base);ctx.stroke();
+    ctx.strokeStyle=PHOS;ctx.lineWidth=1;ctx.beginPath();
+    for(let x=a;x<=b+rise;x+=1){
+      let env=x<a+rise?(x-a)/rise:x>b?1-(x-b)/rise:1;env=Math.max(0,env);
+      x===a?ctx.moveTo(x,base):ctx.lineTo(x,base-(base-top)*env*(0.5+0.5*Math.sin((x-a)*0.9)));
+    }
+    ctx.stroke();
+    ctx.strokeStyle=PALE;ctx.setLineDash([3,3]);
+    const mid=base-(base-top)/2,l=a+rise/2,r=b+rise/2;
+    ctx.beginPath();ctx.moveTo(l,base+8);ctx.lineTo(l,top-6);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(r,base+8);ctx.lineTo(r,mid);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(b+rise+10,top);ctx.lineTo(W-14,top);ctx.stroke();
+    ctx.setLineDash([]);
+    mono(ctx);ctx.fillStyle=PALE;ctx.textAlign="center";ctx.textBaseline="top";
+    ctx.fillText("TOA",l,base+12);
+    ctx.strokeStyle=PALE;ctx.beginPath();ctx.moveTo(l,mid);ctx.lineTo(r,mid);ctx.stroke();
+    ctx.fillStyle="#0A100E";ctx.fillRect((l+r)/2-18,mid-8,36,16);ctx.fillStyle=PALE;ctx.textBaseline="middle";ctx.fillText("PW",(l+r)/2,mid);
+    ctx.textAlign="right";ctx.fillText("PA",W-14,top-12);
+    ctx.beginPath();ctx.moveTo(W-20,top);ctx.lineTo(W-20,base);ctx.stroke();
+    ctx.textAlign="left";ctx.fillStyle=PHOS;ctx.fillText("RF: taşıyıcı frekans",a,top-22);
+    ctx.fillStyle=PHOS_DIM;ctx.fillText("AOA: anten dizisiyle ölçülür",14,base+40);
+  }
+  draw();onResize(()=>{g=fitCanvas(c,210);draw()});
+})();
+(function(){
+  const c=$("streamC");let g=fitCanvas(c,130),truth=false,shown=false;
+  const T=8000,P=SCEN.filter(p=>p.toa<T);
+  const dens=Math.round(SCEN.length/0.04);
+  $("streamStat").textContent=SCEN.length+" darbe / 40 ms ≈ "+fmt(dens)+" darbe/s";
+  function draw(now){
+    const ctx=g.ctx,W=g.w,H=130,x0=8,x1=W-8,base=96;ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle=GRID;ctx.beginPath();ctx.moveTo(x0,base);ctx.lineTo(x1,base);ctx.stroke();
+    P.forEach(p=>{const x=x0+p.toa/T*(x1-x0),h=Math.max(10,(p.pa+75)*2.2);ctx.fillStyle=truth?(p.src<0?NOISE:PAL[p.src]):GRAYP;ctx.fillRect(x,base-h,2,h)});
+    mono(ctx);ctx.fillStyle=PHOS_DIM;ctx.textAlign="center";ctx.textBaseline="top";
+    for(let ms=0;ms<=8;ms+=2)ctx.fillText(ms+" ms",Math.min(Math.max(x0+ms*1000/T*(x1-x0),20),W-24),base+8);
+    if(truth){ctx.textAlign="left";let x=x0;SRC.forEach((s,i)=>{ctx.fillStyle=PAL[i];ctx.fillText(s,x,4);x+=36});ctx.fillStyle=NOISE;ctx.fillText("sahte",x,4)}
+  }
+  $("truthStream").onclick=()=>{truth=!truth;$("truthStream").textContent=truth?"Kaynakları gizle":"Gerçek kaynakları göster";draw();shown=true;check()};
+  draw();onResize(()=>{g=fitCanvas(c,130);draw()});
+  const steps=[
+    ["ADIM 1","Alıcı ve PDW","Alıcı darbeleri algılar, her biri için TOA, RF, PW, AOA ve PA ölçer ve PDW akışı üretir. Bu modülde gördüğün akış budur."],
+    ["ADIM 2","Ön sınıflandırma","Darbeler AOA, RF ve PW benzerliğine göre kümelere ayrılır. Hızlıdır ve akışı küçük parçalara böler. Modül 2."],
+    ["ADIM 3","PRI analizi","Her kümede TOA farklarının histogramı (CDIF/SDIF) çıkarılır, aday PRI değerleri bulunur. Modül 3."],
+    ["ADIM 4","Dizi arama","Aday PRI ile darbe zincirleri aranır, bulunan zincirler akıştan çıkarılır. Modül 4."],
+    ["ADIM 5","Yayıcı tanımı","Ayrılan her darbe dizisinin PRI tipi ve parametre özeti çıkarılır (yayıcı tanımlayıcı kelime). Modül 5."],
+    ["ADIM 6","Takip ve tanıma","Yayıcı zaman içinde takip edilir ve tehdit kütüphanesiyle eşleştirilir. ES ve ELINT eğitimindeki adım budur."]
+  ];
+  let cur=0;const seen=new Set([0]);
+  function render(){
+    $("pipe").innerHTML=steps.map((s,i)=>'<button class="'+(i===cur?"on ":"")+(seen.has(i)?"seen":"")+'" data-i="'+i+'"><span class="k">'+s[0]+'</span>'+s[1]+'</button>').join("");
+    $("pipeBody").innerHTML='<h3 style="margin-bottom:6px">'+steps[cur][1]+'</h3><p>'+steps[cur][2]+'</p>';
+    $("pipe").querySelectorAll("button").forEach(b=>b.onclick=()=>{cur=+b.dataset.i;seen.add(cur);render();check()});
+  }
+  function check(){if(seen.size===6&&shown)done("m1")}
+  render();
+})();
+
+/* ---------- M2 clustering ---------- */
+let CL=null;
+(function(){
+  const use={aoa:true,rf:true,pw:true};let yAx="rf",truth=false;
+  const track=tracker(2,"m2");
+  const c=$("scatC");let g=fitCanvas(c,260);
+  function col(i){if(truth){const s=SCEN[i].src;return s<0?NOISE:PAL[s]}const l=CL.lab[i];return l<0?NOISE:PAL[l%PAL.length]}
+  function run(){
+    const m=+$("tolM").value;$("tolMOut").textContent=m.toFixed(1)+"×";
+    $("tolTxt").textContent="Tolerans kutusu: AOA ±"+(5*m).toFixed(1)+"° · RF ±"+(15*m).toFixed(0)+" MHz · PW ±"+(0.25*m).toFixed(2)+" µs";
+    const r=cluster(SCEN,use,m);CL=Object.assign(r,{S:clusterStats(SCEN,r.lab,r.C)});
+    const noise=r.lab.filter(l=>l<0).length;
+    $("clCount").textContent=r.C;$("clNoise").textContent=noise;
+    $("clTable").innerHTML='<thead><tr><th>KÜME</th><th>DARBE</th><th>AOA</th><th>RF GHz</th><th>PW µs</th><th>'+(truth?"İÇERİK":"DURUM")+'</th></tr></thead><tbody>'+
+      CL.S.map(s=>{
+        const content=Object.entries(s.comp).sort((a,b)=>b[1]-a[1]).map(([k,v])=>(k==="-1"?"sahte":SRC[k])+" "+v).join(" · ");
+        const st=s.real>1?'<span class="pill bad">karışık</span>':'<span class="pill ok">tek kaynak</span>';
+        return '<tr><td><span class="sw" style="background:'+PAL[s.c%PAL.length]+'"></span>K'+(s.c+1)+'</td><td class="n">'+s.n+'</td><td class="n">'+s.aoa.toFixed(1)+'°</td><td class="n">'+(s.rf/1000).toFixed(3)+'</td><td class="n">'+s.pw.toFixed(2)+'</td><td>'+(truth?content+" "+st:'<span class="pill">gizli</span>')+'</td></tr>'}).join("")+'</tbody>';
+    const mixed=CL.S.filter(s=>s.real>1),frag=SRC.map((_,k)=>CL.S.filter(s=>(s.comp[k]||0)>=3).length).filter(n=>n>1).length;
+    let note;
+    if(!use.aoa&&!use.rf&&!use.pw)note="Hiç parametre seçilmedi: bütün darbeler tek bir kümede. Ayrıştırmanın tamamı zamanlama analizine kalır, bu da çok daha zor ve yavaştır.";
+    else if(r.C===3&&mixed.length===1)note="Tipik sonuç: üç küme. Küme tablosunda gerçeği açarsan bir kümenin iki radar içerdiğini görürsün (R1 ve R2): aynı yön, aynı frekans, aynı darbe genişliği. Bunları ayırmak için zamanlama analizi gerekir. Modül 3 tam olarak bu kümeyle ilgilenir.";
+    else if(mixed.length>1||(mixed.length===1&&r.C<3))note="Kümeler fazla birleşiyor. Tolerans çok geniş ya da tek bir parametre yetmiyor. Örneğin yalnızca AOA kullanırsan, 5° arayla duran R3 ve R4 aynı kümeye düşer; RF eklemek onları ayırır.";
+    else if(frag)note="Bazı radarlar birden fazla kümeye bölündü. Tolerans ölçüm hatasından dar kalınca bir radarın darbeleri tek bir bölgede toplanamaz. Toleransı biraz artır.";
+    else note=r.C+" küme bulundu. Gerçeği açıp kümelerin içeriğini kontrol et.";
+    $("clNote").textContent=note;
+    draw();if(window.__k3d)window.__k3d.dirty=true;
+  }
+  function draw(){
+    const ctx=g.ctx,W=g.w,H=260,x0=44,x1=W-10,top=10,base=H-34;ctx.clearRect(0,0,W,H);
+    const yr=yAx==="rf"?[2000,18000]:[0,5],yv=p=>yAx==="rf"?p.rf:p.pw;
+    const X=a=>x0+a/360*(x1-x0),Y=v=>base-(v-yr[0])/(yr[1]-yr[0])*(base-top);
+    ctx.strokeStyle=GRID;ctx.lineWidth=1;mono(ctx);ctx.fillStyle=PHOS_DIM;
+    for(let a=0;a<=360;a+=90){const x=X(a);ctx.beginPath();ctx.moveTo(x,top);ctx.lineTo(x,base);ctx.stroke();ctx.textAlign="center";ctx.textBaseline="top";ctx.fillText(a+"°",Math.min(x,W-16),base+6)}
+    ctx.textAlign="right";ctx.fillText("AOA",x1,base+18);
+    const yt=yAx==="rf"?[2000,6000,10000,14000,18000]:[0,1,2,3,4,5];
+    yt.forEach(v=>{const y=Y(v);ctx.beginPath();ctx.moveTo(x0,y);ctx.lineTo(x1,y);ctx.stroke();ctx.textAlign="right";ctx.textBaseline="middle";ctx.fillText(yAx==="rf"?v/1000:v,x0-6,y)});
+    ctx.save();ctx.textAlign="left";ctx.textBaseline="top";ctx.fillText(yAx==="rf"?"RF (GHz)":"PW (µs)",x0+4,top);ctx.restore();
+    SCEN.forEach((p,i)=>{ctx.fillStyle=col(i);ctx.globalAlpha=0.85;ctx.beginPath();ctx.arc(X(p.aoa),Y(yv(p)),2.6,0,Math.PI*2);ctx.fill()});ctx.globalAlpha=1;
+    if(!truth)CL.S.forEach(s=>{ctx.fillStyle="#E2E7EA";ctx.textAlign="left";ctx.textBaseline="bottom";ctx.fillText("K"+(s.c+1),X(s.aoa)+8,Y(yAx==="rf"?s.rf:s.pw)-4)});
+  }
+  $("featSel").querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>{use[b.dataset.f]=!use[b.dataset.f];b.classList.toggle("sel",use[b.dataset.f]);track("f");run()}));
+  $("tolM").addEventListener("input",()=>{track("t");run()});
+  selOpts($("ySel"),"y",v=>{yAx=v;draw()});
+  $("truthCl").onclick=()=>{truth=!truth;$("truthCl").textContent=truth?"Gerçeği gizle":"Gerçeği göster";run()};
+  onResize(()=>{g=fitCanvas(c,260);draw()});
+  run();
+  window.__colOf=col;
+})();
+
+/* ---------- M3 histograms ---------- */
+(function(){
+  const DS={
+    a:{defs:[{pri:{t:"sabit",v:1000}}],T:40000},
+    b:{defs:[{pri:{t:"sabit",v:1000}},{pri:{t:"sabit",v:1370}}],T:60000},
+    c:{defs:[{pri:{t:"stagger",v:[300,400,500]}}],T:40000},
+    d:{defs:[{pri:{t:"jitter",v:1500,j:0.1}}],T:60000},
+    e:{defs:[{pri:{t:"sabit",v:1000}},{pri:{t:"sabit",v:1370}}],T:60000,miss:0.15}
+  };
+  const cache={};let mode="sdif";
+  const track=tracker(3,"m3");
+  const lc=$("lvlC"),hc=$("histC");let lg=fitCanvas(lc,110),hg=fitCanvas(hc,230);
+  function data(k){if(!cache[k]){const d=DS[k];cache[k]=gen(d.defs,d.T,{seed:5,miss:d.miss||0})}return cache[k]}
+  function drawLvl(P,c){
+    const ctx=lg.ctx,W=lg.w,H=110,x0=10,x1=W-10,base=88;ctx.clearRect(0,0,W,H);
+    const sub=P.slice(0,12),T0=sub[0].toa,T1=sub[sub.length-1].toa,X=t=>x0+(t-T0)/(T1-T0)*(x1-x0);
+    ctx.strokeStyle=GRID;ctx.beginPath();ctx.moveTo(x0,base);ctx.lineTo(x1,base);ctx.stroke();
+    const multi=DS[$("dsSel").value].defs.length>1;
+    sub.forEach(p=>{ctx.fillStyle=multi?PAL[p.src]:PHOS;ctx.fillRect(X(p.toa)-1,base-22,2,22)});
+    mono(ctx);
+    for(let i=0;i+c<sub.length;i++){
+      const a=X(sub[i].toa),b=X(sub[i+c].toa),m=(a+b)/2,hgt=Math.min(54,(b-a)*0.5+8);
+      ctx.strokeStyle=i<3?PALE:"rgba(183,199,191,0.35)";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a,base-24);ctx.quadraticCurveTo(m,base-24-hgt*1.4,b,base-24);ctx.stroke();
+      if(i<2){ctx.fillStyle=PALE;ctx.textAlign="center";ctx.textBaseline="bottom";ctx.fillText(Math.round(sub[i+c].toa-sub[i].toa),m,base-26-hgt*0.7-i*12)}
+    }
+  }
+  function draw(){
+    const k=$("dsSel").value,c=+$("hLvl").value,W=+$("hBin").value,cum=mode==="cdif";
+    $("hLvlOut").textContent=c;$("hBinOut").textContent=W+" µs";
+    const P=data(k),t=P.map(p=>p.toa),maxT=3000,h=diffHist(t,c,W,maxT,cum),T=thrFn(t.length,c,h.length,cum),pk=findPeaks(h,T,W);
+    drawLvl(P,c);
+    const ctx=hg.ctx,Wc=hg.w,H=230,x0=34,x1=Wc-10,top=12,base=H-30;ctx.clearRect(0,0,Wc,H);
+    const raw=Math.max(5,...h,T(0))/4,steps=[1,2,5,10,20,25,50,100,200,250,500],st=steps.find(v=>v>=raw)||1000,ymax=st*4;
+    const X=v=>x0+v/maxT*(x1-x0),Y=v=>base-v/ymax*(base-top);
+    ctx.strokeStyle=GRID;mono(ctx);ctx.fillStyle=PHOS_DIM;
+    for(let v=0;v<=maxT;v+=500){ctx.beginPath();ctx.moveTo(X(v),top);ctx.lineTo(X(v),base);ctx.stroke();ctx.textAlign="center";ctx.textBaseline="top";ctx.fillText(v,Math.min(Math.max(X(v),14),Wc-18),base+6)}
+    for(let v=0;v<=ymax;v+=st){ctx.textAlign="right";ctx.textBaseline="middle";ctx.fillText(v,x0-5,Y(v))}
+    ctx.textAlign="right";ctx.textBaseline="top";ctx.fillStyle=PALE;ctx.fillText("fark (µs)",x1,top);
+    const bw=Math.max(1,(x1-x0)/h.length-0.5);
+    ctx.fillStyle=PHOS;h.forEach((v,b)=>{if(v)ctx.fillRect(X(b*W)-bw/2,Y(v),bw,base-Y(v))});
+    ctx.strokeStyle=RED;ctx.lineWidth=1.5;ctx.beginPath();for(let b=0;b<h.length;b++){const x=X(b*W),y=Y(Math.min(ymax,T(b)));b?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.stroke();ctx.lineWidth=1;
+    pk.forEach(p=>{ctx.fillStyle=p.harm?PALE:"#E2E7EA";ctx.textAlign="center";ctx.textBaseline="bottom";ctx.fillText(Math.round(p.v),X(p.v),Math.max(top+10,Y(p.n)-3))});
+    $("peaks").innerHTML=pk.length?pk.map(p=>'<span class="'+(p.harm?"h":"")+'">'+Math.round(p.v)+' µs'+(p.harm?" · kat":"")+'</span>').join(""):'<span class="h">eşiği geçen tepe yok</span>';
+    const real=pk.filter(p=>!p.harm).map(p=>Math.round(p.v));
+    const notes={
+      a:"Tek bir sabit PRI: seviye 1'de 1000 µs'de tek ve çok yüksek bir tepe var. Seviyeyi artırırsan SDIF'te tepe 2000 ve 3000 µs'ye kayar; bunlar gerçek PRI değil, katlarıdır. CDIF'te katlar birikir ama en küçük tepe hep gerçek PRI'dir.",
+      b:"İki radar karışık. Seviye 1'de 1370 µs neredeyse görünmez, çünkü iki R2 darbesi arasına hemen her zaman bir R1 darbesi girer. Seviye 2'ye çık: iki PRI de ortaya çıkar. Bu yüzden ayrıştırmada tek seviyeye bakmak yetmez; SDIF seviyeleri sırayla, CDIF ise birikimli inceler.",
+      c:"Stagger: seviye 1'de üç keskin tepe (300, 400, 500 µs). Seviye 3'te tüm darbeler 1200 µs'de birleşir: bu, stagger çerçeve periyodudur (300+400+500). Algoritma 1200'ü katlardan biri gibi işaretleyebilir; stagger tanıma bu ilişkiyi ayrıca kontrol etmelidir.",
+      d:"Jitter: 10 µs kutularla farklar 300 µs'lik bir aralığa dağılır, hiçbir kutu eşiği belirgin biçimde geçemez. Kutu genişliğini 40–60 µs'ye çıkar: yayvan bir öbek belirginleşir. Jitter'lı radarlar için geniş kutular veya PRI dönüşümü gibi yöntemler gerekir.",
+      e:"Kayıp darbeler: her eksik darbe, PRI'nin katında (2000, 2740 µs) fazladan fark üretir ve tepeleri zayıflatır. Yine de CDIF'te seviye 2–3'te iki PRI de bulunur. Dizi arama, kayıp darbeleri tolere edecek şekilde tasarlanmalıdır (modül 4)."
+    };
+    $("hNote").innerHTML=notes[k]+(real.length?" <b>Aday PRI: "+real.join(", ")+" µs.</b>":"");
+  }
+  $("dsSel").addEventListener("change",()=>{track("d");draw()});
+  $("hLvl").addEventListener("input",()=>{track("l");draw()});
+  $("hBin").addEventListener("input",()=>{track("b");draw()});
+  selOpts($("hMode"),"m",v=>{mode=v;track("m");draw()});
+  onResize(()=>{lg=fitCanvas(lc,110);hg=fitCanvas(hc,230);draw()});
+  draw();
+})();
+
+/* ---------- M4 sequence search ---------- */
+(function(){
+  const base=gen([{pri:{t:"sabit",v:1000}},{pri:{t:"sabit",v:1370}}],20000,{seed:7});
+  let r1=0;const D=base.filter(p=>{if(p.src===0){r1++;if(r1===9)return false}return true});
+  D.push({toa:6420.3,src:-1},{toa:14975.8,src:-1});D.sort((a,b)=>a.toa-b.toa);
+  const t=D.map(p=>p.toa),n=t.length,T=20000;
+  let pri=1000,assigned,laneOf,steps,si,chain,win,logs,searchNo,extracted,running;
+  const c=$("seqC");let g=fitCanvas(c,190);
+  function reset(){assigned=new Array(n).fill(false);laneOf=new Array(n).fill(-1);steps=null;si=0;chain=[];win=null;logs=[];searchNo=0;extracted=0;running=false;
+    log("Akışta "+n+" darbe var. Bir PRI seç ve 'Sonraki adım' ile aramayı başlat.");render()}
+  function log(s,cl){logs.push([s,cl||""]);if(logs.length>9)logs.shift()}
+  function prep(){
+    const tol=+$("sTol").value,mm=+$("sMiss").value,avail=assigned.map(a=>!a);steps=[];
+    seqSearch(t,avail,pri,tol,mm,6,steps);si=0;extracted=0;running=true;
+    log("Yeni arama: PRI "+pri+" µs, tolerans ±"+tol.toFixed(1)+" µs, izin verilen kayıp "+mm+".","w");
+  }
+  function apply(s){
+    const tt=x=>fmt(x,1);
+    if(s.k==="start"){chain=[s.i];win=null;log("Başlangıç: darbe #"+(s.i+1)+" (TOA "+tt(t[s.i])+" µs)")}
+    else if(s.k==="found"){chain.push(s.i);win={exp:s.exp,tol:s.tol,ok:true};log("Beklenen "+tt(s.exp)+" ±"+s.tol.toFixed(1)+" → #"+(s.i+1)+" bulundu (sapma "+s.d.toFixed(2)+" µs)","g")}
+    else if(s.k==="miss"){win={exp:s.exp,tol:s.tol,ok:false};log("Beklenen "+tt(s.exp)+" → darbe yok (kayıp "+s.miss+")","r")}
+    else if(s.k==="end"){win=null;log("Kayıt sonuna ulaşıldı.")}
+    else if(s.k==="accept"){s.chain.forEach(i=>{assigned[i]=true;laneOf[i]=searchNo});extracted+=s.chain.length;log("Zincir "+s.chain.length+" darbe: kabul edildi, akıştan çıkarıldı.","g");chain=[];win=null}
+    else if(s.k==="reject"){log("Zincir "+s.chain.length+" darbe: reddedildi (en az 6 gerekli).","r");chain=[];win=null}
+  }
+  function finish(){running=false;
+    const rest=assigned.filter(a=>!a).length;log("Arama bitti: "+extracted+" darbe çıkarıldı, "+rest+" darbe kaldı.","w");
+    let note;
+    if(pri===2000&&extracted>0)note="Dikkat: 2000 µs ile arama, R1'in darbelerini her ikide bir atlayarak zincir kurdu ve yanlış bir 'radar' üretti. Bu yüzden aday PRI'ler küçükten büyüğe denenir ve katlar ayıklanır.";
+    else if(rest<=3)note="Tamamlandı. İki radarın darbeleri ayrıldı, geride yalnızca sahte darbeler kaldı. R1'deki tek kayıp darbe, izin verilen kayıp sayesinde zinciri koparmadı.";
+    else if(extracted===0)note="Hiç zincir kabul edilmedi. Tolerans çok dar olabilir ya da seçilen PRI bu akışta yok.";
+    else note="Bir radar çıkarıldı. Şimdi diğer PRI ile kalan darbelerde ara. İzin verilen kaybı 0 yapıp tekrar dene: R1'deki eksik darbe zinciri ikiye böler.";
+    $("sNote").textContent=note;
+    if(assigned.filter(a=>!a).length<=3&&laneOf.some(l=>l===0)&&laneOf.some(l=>l===1))done("m4");
+    if(extracted>0)searchNo++;
+  }
+  function step(){if(!running){if(searchNo>=2){log("İki çıkarma yapıldı. Sıfırla ile baştan başla.","w");render();return}prep()}
+    if(si<steps.length){apply(steps[si++])}
+    if(si>=steps.length&&running)finish();
+    render()}
+  function nextChain(){if(!running){if(searchNo>=2){step();return}prep()}let guard=0;while(si<steps.length&&guard++<500){const s=steps[si++];apply(s);if(s.k==="accept"||s.k==="reject")break}if(si>=steps.length&&running)finish();render()}
+  function toEnd(){if(!running){if(searchNo>=2){step();return}prep()}while(si<steps.length)apply(steps[si++]);finish();render()}
+  function render(){
+    const ctx=g.ctx,W=g.w,H=190,x0=8,x1=W-8;ctx.clearRect(0,0,W,H);
+    const X=v=>x0+v/T*(x1-x0),lanes=[[14,48],[84,30],[134,30]];
+    mono(ctx);ctx.textAlign="left";ctx.textBaseline="top";
+    ctx.strokeStyle=GRID;lanes.forEach(([y,h])=>{ctx.beginPath();ctx.moveTo(x0,y+h);ctx.lineTo(x1,y+h);ctx.stroke()});
+    ctx.fillStyle=PHOS_DIM;ctx.fillText("akış",x0,0);ctx.fillText("1. çıkarma",x0,lanes[1][0]-12);ctx.fillText("2. çıkarma",x0,lanes[2][0]-12);
+    for(let ms=0;ms<=20;ms+=5){ctx.textAlign="center";ctx.fillText(ms+" ms",Math.min(Math.max(X(ms*1000),18),W-22),H-12)}
+    if(win){ctx.fillStyle=win.ok?"rgba(110,168,255,0.28)":"rgba(255,123,110,0.3)";const a=X(win.exp-win.tol),b=X(win.exp+win.tol);ctx.fillRect(a-2,lanes[0][0]-4,Math.max(5,b-a+4),lanes[0][1]+8)}
+    for(let i=0;i<n;i++){
+      if(laneOf[i]>=0){const [y,h]=lanes[laneOf[i]+1];ctx.fillStyle=PAL[laneOf[i]];ctx.fillRect(X(t[i])-1,y,2,h)}
+      else{ctx.fillStyle=chain.includes(i)?"#E2E7EA":GRAYP;ctx.fillRect(X(t[i])-1,lanes[0][0]+(chain.includes(i)?0:10),2,chain.includes(i)?48:38)}
+    }
+    if(chain.length>1){ctx.strokeStyle="#E2E7EA";ctx.lineWidth=1;for(let k=1;k<chain.length;k++){const a=X(t[chain[k-1]]),b=X(t[chain[k]]);ctx.beginPath();ctx.moveTo(a,lanes[0][0]);ctx.quadraticCurveTo((a+b)/2,lanes[0][0]-12,b,lanes[0][0]);ctx.stroke()}}
+    $("sLog").innerHTML=logs.map(([s,cl])=>'<div class="'+cl+'">'+s+'</div>').join("");
+    $("sOut").textContent=extracted;$("sRest").textContent=assigned.filter(a=>!a).length;
+  }
+  selOpts($("candSel"),"p",v=>{pri=+v;if(running){running=false;steps=null;log("Arama iptal edildi, yeni PRI: "+pri+" µs.","w");chain=[];win=null;render()}});
+  $("sTol").addEventListener("input",()=>{$("sTolOut").textContent=(+$("sTol").value).toFixed(1)});
+  $("sMiss").addEventListener("input",()=>{$("sMissOut").textContent=$("sMiss").value});
+  $("sStep").onclick=step;$("sChain").onclick=nextChain;$("sEnd").onclick=toEnd;$("sReset").onclick=reset;
+  onResize(()=>{g=fitCanvas(c,190);render()});
+  reset();
+})();
+
+/* ---------- M5 PRI types ---------- */
+(function(){
+  const TY=[
+    ["sabit","Sabit",{t:"sabit",v:1000},"Tüm aralıklar aynı. Grafik düz bir çizgi, histogramda tek ve keskin bir tepe var. En kolay ayrıştırılan tiptir."],
+    ["jitter","Jitter",{t:"jitter",v:1000,j:0.12},"Aralıklar ortalama etrafında rastgele dağılır. Grafik dağınık noktalardan oluşur, histogramda yayvan bir öbek görülür. Aldatma tekniklerini zorlaştırmak için kullanılır."],
+    ["stagger","Stagger",{t:"stagger",v:[800,1150,950]},"Birkaç değer sabit bir sırayla tekrarlanır. Grafikte tekrarlayan basamak deseni, histogramda birkaç keskin tepe vardır. Hız ölçümündeki kör noktaları azaltır."],
+    ["kayan","Kayan",{t:"kayan",v0:700,v1:1300,n:12},"Aralık düzenli olarak artar, sonra başa döner. Grafik testere dişine benzer, histogram geniş ve düz bir bant halindedir."],
+    ["ds","Dwell & switch",{t:"ds",v:[800,1250,1000],n:10},"Radar bir süre bir PRI'de kalır (dwell), sonra başka bir PRI'ye geçer. Grafikte uzun ve düz basamaklar vardır. Histogram stagger gibi birkaç tepe gösterir, ama sıra grafiği farkı ortaya koyar."],
+    ["sin","Sinüzoidal",{t:"sin",v:1000,a:250,n:16},"Aralık sinüs biçiminde değişir. Grafik dalga gibidir, histogramda iki uçta yığılma görülür (sinüs uç noktalarda daha uzun kalır)."]
+  ];
+  function seq(p,seed,N){const r=mulberry(seed),a=[];for(let k=0;k<(N||48);k++)a.push(nextPri(p,k,r));return a}
+  function plotSeq(c,h,a,lo,hi){
+    const g=fitCanvas(c,h),ctx=g.ctx,W=g.w,x0=34,x1=W-8,top=10,base=h-22;ctx.clearRect(0,0,W,h);
+    const X=i=>x0+i/(a.length-1)*(x1-x0),Y=v=>base-(v-lo)/(hi-lo)*(base-top);
+    ctx.strokeStyle=GRID;mono(ctx);ctx.fillStyle=PHOS_DIM;
+    for(let v=lo;v<=hi;v+=(hi-lo)/4){ctx.beginPath();ctx.moveTo(x0,Y(v));ctx.lineTo(x1,Y(v));ctx.stroke();ctx.textAlign="right";ctx.textBaseline="middle";ctx.fillText(Math.round(v),x0-4,Y(v))}
+    ctx.textAlign="right";ctx.textBaseline="top";ctx.fillText("darbe sırası",x1,base+6);
+    ctx.strokeStyle="rgba(245,165,36,0.45)";ctx.beginPath();a.forEach((v,i)=>i?ctx.lineTo(X(i),Y(v)):ctx.moveTo(X(i),Y(v)));ctx.stroke();
+    ctx.fillStyle=PHOS;a.forEach((v,i)=>{ctx.beginPath();ctx.arc(X(i),Y(v),2.4,0,Math.PI*2);ctx.fill()});
+  }
+  function plotHist(c,h,a,lo,hi){
+    const g=fitCanvas(c,h),ctx=g.ctx,W=g.w,x0=26,x1=W-8,top=10,base=h-22,bw=20,nb=Math.round((hi-lo)/bw),H=new Array(nb).fill(0);
+    a.forEach(v=>{const b=Math.floor((v-lo)/bw);if(b>=0&&b<nb)H[b]++});
+    const ym=Math.max(...H),X=v=>x0+(v-lo)/(hi-lo)*(x1-x0);
+    ctx.clearRect(0,0,W,h);ctx.strokeStyle=GRID;mono(ctx);ctx.fillStyle=PHOS_DIM;
+    for(let v=lo;v<=hi;v+=(hi-lo)/4){ctx.beginPath();ctx.moveTo(X(v),top);ctx.lineTo(X(v),base);ctx.stroke();ctx.textAlign="center";ctx.textBaseline="top";ctx.fillText(Math.round(v),Math.min(Math.max(X(v),14),W-16),base+6)}
+    ctx.fillStyle=PHOS;H.forEach((v,b)=>{if(v){const x=X(lo+b*bw),w=X(lo+(b+1)*bw)-x-1,y=base-v/ym*(base-top);ctx.fillRect(x,y,w,base-y)}});
+  }
+  let cur=0;
+  function ref(){const a=seq(TY[cur][2],9);plotSeq($("tySeq"),170,a,500,1500);plotHist($("tyHist"),170,a,500,1500);$("tyDesc").textContent=TY[cur][3]}
+  $("typeSel").innerHTML=TY.map((x,i)=>'<button class="opt'+(i?"":" sel")+'" data-i="'+i+'">'+x[1]+'</button>').join("");
+  selOpts($("typeSel"),"i",v=>{cur=+v;ref()});
+  const G=[
+    ["stagger",{t:"stagger",v:[700,1250,900,1100]}],
+    ["sin",{t:"sin",v:1050,a:200,n:20}],
+    ["jitter",{t:"jitter",v:900,j:0.15}],
+    ["ds",{t:"ds",v:[1200,750],n:12}],
+    ["sabit",{t:"sabit",v:1220}],
+    ["kayan",{t:"kayan",v0:1350,v1:650,n:10}]
+  ];
+  let ans=store.get("game",{});
+  function game(){
+    let ok=0,cnt=0;
+    $("game").innerHTML=G.map((x,i)=>{
+      const a=ans[i];if(a){cnt++;if(a===x[0])ok++}
+      const btn=TY.map(ty=>{let c="";if(a){if(ty[0]===x[0])c="ok";else if(ty[0]===a)c="bad"}return '<button class="opt '+c+'" data-i="'+i+'" data-k="'+ty[0]+'">'+ty[1]+'</button>'}).join("");
+      return '<div class="gcard"><div class="note" style="margin-bottom:6px">Radar '+String.fromCharCode(65+i)+'</div><canvas id="gc'+i+'" height="130"></canvas><div class="opts">'+btn+'</div></div>';
+    }).join("");
+    G.forEach((x,i)=>plotSeq($("gc"+i),130,seq(x[1],20+i,40),500,1500));
+    $("game").querySelectorAll(".opt").forEach(b=>b.onclick=()=>{ans[b.dataset.i]=b.dataset.k;store.set("game",ans);game()});
+    $("gScore").textContent=ok+" / 6 doğru · "+cnt+" cevaplandı";
+    if(cnt===6)done("m5");
+  }
+  ref();game();
+  onResize(()=>{ref();game()});
+})();
+
+/* ---------- M6 lab ---------- */
+(function(){
+  let seed=store.get("labSeed",21),last=null;
+  const c=$("laneC");
+  const TYN={sabit:"sabit",jitter:"jitter",stagger:"stagger"};
+  function outs(){$("pMissOut").textContent="%"+$("pMiss").value;$("pSpurOut").textContent=$("pSpur").value;$("pAoaOut").textContent=(+$("pAoa").value).toFixed(1)+"°";$("pTolOut").textContent=(+$("pTol").value).toFixed(1)+"×";$("pSeed").textContent="senaryo #"+seed}
+  function priTxt(e){if(e.type==="stagger")return e.v.map(v=>Math.round(v)).join("/");if(e.type==="jitter")return Math.round(e.v[0])+" ±%"+Math.round(e.j*100);return Math.round(e.v[0])+""}
+  function truthTxt(s){if(s<0)return"sahte";const d=DEFS[s].pri;return SRC[s]+" · "+d.t+" "+(d.t==="stagger"?d.v.join("/"):d.t==="jitter"?d.v+" ±%"+Math.round(d.j*100):d.v)}
+  function run(user){
+    outs();
+    const P=gen(DEFS,40000,{seed,miss:+$("pMiss").value/100,spur:+$("pSpur").value,aoaSig:+$("pAoa").value});
+    const R=pipeline(P,+$("pTol").value);last={P,R};
+    const noise=R.lab.filter(l=>l<0).length,L=[];
+    L.push(['1 · Kümeleme: '+P.length+' darbe → '+R.C+' küme, '+noise+' darbe gürültü.','']);
+    R.info.forEach(it=>{
+      if(it.mode==="tek")L.push(['2 · K'+(it.c+1)+' ('+it.n+' darbe): tek yayıcı testi geçti, PRI tipi doğrudan belirlendi.','g']);
+      else L.push(['2 · K'+(it.c+1)+' ('+it.n+' darbe): tek yayıcı testi başarısız → CDIF adayları: '+(it.cands.length?it.cands.map(v=>Math.round(v)).join(", ")+' µs':'yok')+' → dizi arama ile '+it.found+' yayıcı çıkarıldı'+(it.rest?', '+it.rest+' darbe kaldı':'')+'.','w']);
+    });
+    const good=new Set();R.res.forEach(e=>{e.ok=judge(e)&&!good.has(e.src);if(e.ok)good.add(e.src)});
+    L.push(['3 · Sonuç: '+R.res.length+' yayıcı raporlandı, '+good.size+' tanesi gerçek bir radarla doğru eşleşti.',good.size===4?'g':'r']);
+    $("pLog").innerHTML=L.map(([s,cl])=>'<div class="'+cl+'">'+s+'</div>').join("");
+    $("pScore").textContent=good.size+" / 4 radar doğru ayrıldı ve tanındı";
+    $("resTable").innerHTML='<thead><tr><th>YAYICI</th><th>DARBE</th><th>AOA</th><th>RF GHz</th><th>PW</th><th>PRI TİPİ</th><th>PRI µs</th><th>GERÇEK</th></tr></thead><tbody>'+
+      R.res.map((e,i)=>'<tr><td><span class="sw" style="background:'+PAL[i%PAL.length]+'"></span>Y'+(i+1)+'</td><td class="n">'+e.ids.length+'</td><td class="n">'+e.aoa.toFixed(1)+'°</td><td class="n">'+(e.rf/1000).toFixed(3)+'</td><td class="n">'+e.pw.toFixed(2)+'</td><td>'+TYN[e.type]+'</td><td class="n">'+priTxt(e)+'</td><td>'+truthTxt(e.src)+' <span class="pill '+(e.ok?"ok":"bad")+'">'+(e.ok?"doğru":"hatalı")+'</span></td></tr>').join("")+'</tbody>';
+    const miss=+$("pMiss").value,aoa=+$("pAoa").value,tol=+$("pTol").value,spur=+$("pSpur").value;
+    let note;
+    if(good.size===4)note="Dört radar da doğru ayrıldı. Şimdi zorluğu artır: kayıp darbeyi %15'in üstüne çıkar ya da AOA hatasını büyüt ve küme toleransını düşük bırak.";
+    else if(miss>=12)note="Kayıp darbeler arttıkça önce PRI tipi tanıma bozulur: eksik darbeler stagger desenini kırar, sabit PRI'de kat değerler üretir ve dizi aramada zincirler kopar. Gerçek sistemler bu yüzden kaybı açıkça modelleyen algoritmalar kullanır.";
+    else if(aoa>3&&tol<1.5)note="AOA hatası tolerans kutusundan büyük olunca radarlar birden fazla kümeye bölünür. Küme toleransını artırınca toparlanır; ama tolerans çok büyürse farklı radarlar birleşir. Bu denge, ön sınıflandırmanın temel ayarıdır.";
+    else if(tol>2)note="Tolerans çok geniş: farklı radarlar aynı kümeye düşüyor ve zamanlama analizi daha karmaşık bir karışımla uğraşmak zorunda kalıyor.";
+    else if(spur>=40)note="Sahte darbeler çoğaldıkça bazıları gerçek kümelere sızar ve tek yayıcı testini bozar. Yoğunluk tabanlı kümeleme yalnız kalan sahte darbeleri iyi ayıklar, ama yoğun bölgelerde bu zorlaşır.";
+    else note="Bazı radarlar kaçırıldı. Günlükte hangi aşamanın bozulduğuna bak: kümeleme mi, aday PRI bulma mı, yoksa PRI tipi tanıma mı?";
+    $("pNote").textContent=note;
+    lanes();if(user===true)done("m6");
+  }
+  function lanes(){
+    if(!last)return;const {P,R}=last,rows=R.res.length+2,H=24+rows*26,g=fitCanvas(c,H),ctx=g.ctx,W=g.w,x0=58,x1=W-8,T=15000;
+    ctx.clearRect(0,0,W,H);mono(ctx);
+    const X=v=>x0+v/T*(x1-x0),Y=i=>8+i*26;
+    const used=new Set();R.res.forEach(e=>e.ids.forEach(i=>used.add(i)));
+    const row=(i,label,color,ids)=>{ctx.strokeStyle=GRID;ctx.beginPath();ctx.moveTo(x0,Y(i)+20);ctx.lineTo(x1,Y(i)+20);ctx.stroke();ctx.fillStyle=color;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillText(label,4,Y(i)+11);ids.forEach(k=>{if(P[k].toa<T)ctx.fillRect(X(P[k].toa)-1,Y(i)+4,2,16)})};
+    row(0,"girdi",GRAYP,P.map((_,k)=>k));
+    R.res.forEach((e,i)=>row(i+1,"Y"+(i+1),PAL[i%PAL.length],e.ids));
+    row(rows-1,"kalan",NOISE,P.map((_,k)=>k).filter(k=>!used.has(k)));
+    ctx.fillStyle=PHOS_DIM;ctx.textAlign="center";ctx.textBaseline="top";
+    for(let ms=0;ms<=15;ms+=5)ctx.fillText(ms+" ms",Math.min(Math.max(X(ms*1000),x0+10),W-22),Y(rows)+2);
+  }
+  ["pMiss","pSpur","pAoa","pTol"].forEach(id=>$(id).addEventListener("input",outs));
+  ["pMiss","pSpur","pAoa","pTol"].forEach(id=>$(id).addEventListener("change",()=>run(true)));
+  $("pRun").onclick=()=>run(true);
+  $("pNew").onclick=()=>{seed=1+Math.floor(Math.random()*9999);store.set("labSeed",seed);run(true)};
+  onResize(lanes);
+  outs();run(false);
+})();
+
+/* ---------- 3D scatter ---------- */
+(function(){
+  const s=Scene3D("k3d",320,{az:-0.7,el:0.35,dist:11,draw(s){
+    const A=a=>a/360*6-3,R=f=>(f-2000)/16000*4-2,Pw=w=>w/5*4-2;
+    const E=[[-3,-2,-2],[3,-2,-2],[3,2,-2],[-3,2,-2],[-3,-2,2],[3,-2,2],[3,2,2],[-3,2,2]];
+    [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]].forEach(([a,b])=>s.line([E[a],E[b]],"#2A3F37",1));
+    for(let a=0;a<=360;a+=90)s.text([A(a),-2.35,2],a+"°",PHOS_DIM);
+    s.text([0,-2.75,2],"AOA",PALE);
+    [2,10,18].forEach(f=>s.text([-3.35,R(f*1000),2],f+"",PHOS_DIM,"right"));
+    s.text([-3.4,2.4,2],"RF GHz",PALE,"right");
+    [0,2.5,5].forEach(w=>s.text([3.3,-2,Pw(w)],w+"",PHOS_DIM,"left"));
+    s.text([3.4,-2.4,0],"PW µs",PALE,"left");
+    const pts=SCEN.map((p,i)=>{const q=s.P(A(p.aoa),R(p.rf),Pw(p.pw));q.i=i;return q}).sort((a,b)=>b.d-a.d);
+    const ctx=s.ctx;pts.forEach(q=>{ctx.fillStyle=window.__colOf(q.i);ctx.beginPath();ctx.arc(q.x,q.y,Math.max(1.6,26/q.d),0,Math.PI*2);ctx.fill()});
+  }});
+  window.__k3d=s;
+  document.querySelectorAll(".s3d-ctl").forEach(d=>{
+    const sc=scenes[d.dataset.for];if(!sc)return;
+    d.innerHTML='<button data-a="rot"></button><button data-a="in">Yakınlaştır</button><button data-a="out">Uzaklaştır</button><button data-a="home">Görünümü sıfırla</button>';
+    const rb=d.querySelector('[data-a="rot"]'),lab=()=>{rb.textContent=sc.auto?"Döndürmeyi durdur":"Otomatik döndür"};lab();
+    d.addEventListener("click",e=>{const a=e.target.dataset&&e.target.dataset.a;if(!a)return;
+      if(a==="rot"){sc.auto=!sc.auto;lab()}
+      if(a==="in")sc.dist=Math.max(sc.home[2]*0.4,sc.dist*0.85);
+      if(a==="out")sc.dist=Math.min(sc.home[2]*2,sc.dist/0.85);
+      if(a==="home"){sc.az=sc.home[0];sc.el=sc.home[1];sc.dist=sc.home[2]}
+      sc.dirty=true});
+  });
+})();
+
+/* ---------- M7 quiz ---------- */
+(function(){
+  const Q=[
+    ["Bir PDW'de aşağıdakilerden hangisi bulunmaz?",["Geliş zamanı (TOA)","Taşıyıcı frekans (RF)","Darbenin hangi radara ait olduğu","Geliş açısı (AOA)"],2,"PDW yalnızca ölçümleri içerir. Darbenin kaynağını bulmak ayrıştırmanın işidir."],
+    ["Darbe ayrıştırmanın (deinterleaving) amacı nedir?",["Darbeleri yükseltmek","Karışık darbe akışını yayıcılara göre gruplamak","Radarı karıştırmak","Darbe genişliğini ölçmek"],1,"Tek bir akış halinde gelen darbeler, her radara ait ayrı dizilere bölünür."],
+    ["Ön sınıflandırmada AOA neden en güvenilir parametre sayılır?",["En kolay ölçülen parametre olduğu için","Radar yönünü darbeden darbeye değiştiremediği için","Her radarın AOA'sı farklı olmak zorunda olduğu için","AOA hiç ölçüm hatası içermediği için"],1,"RF, PRI ve PW radar tarafından değiştirilebilir; geliş yönü ise platform hareketiyle yavaşça değişir."],
+    ["Aynı yönde, aynı bantta ve aynı darbe genişliğindeki iki radar hangi aşamada ayrılır?",["Ön sınıflandırma","PRI analizi ve dizi arama","Kütüphane eşleştirme","Hiçbir aşamada ayrılamaz"],1,"Parametreleri aynı olan radarları yalnızca zamanlama, yani TOA analizi ayırabilir."],
+    ["CDIF ile SDIF arasındaki temel fark nedir?",["CDIF RF, SDIF TOA kullanır","CDIF fark histogramlarını seviyeler boyunca biriktirir, SDIF her seviyeyi ayrı inceler","SDIF yalnızca stagger için çalışır","İkisi aynıdır"],1,"CDIF: kümülatif fark histogramı. SDIF: sıralı fark histogramı. SDIF, katların yanlış PRI olarak alınmasını azaltır ve hesap yükü daha düşüktür."],
+    ["Fark histogramında 1000 ve 2000 µs'de tepe varsa en olası yorum nedir?",["İki ayrı radar var","Gerçek PRI 1000 µs, 2000 µs onun katı","Gerçek PRI 2000 µs","Histogram hatalı"],1,"Bir PRI'nin katları da tepe üretir. Bu yüzden adaylar küçükten büyüğe değerlendirilir ve katlar ayıklanır."],
+    ["Dizi aramada tolerans çok küçük seçilirse ne olur?",["Hiçbir şey değişmez","Ölçüm hatası ve jitter yüzünden darbeler pencereye düşmez, zincirler kopar","Daha çok sahte darbe yakalanır","Arama daha uzun zincirler bulur"],1,"Tolerans, TOA ölçüm hatası ve PRI oynamasından küçük olmamalıdır."],
+    ["Stagger PRI'li bir radarın fark histogramı nasıl görünür?",["Tek keskin tepe","Yayvan bir öbek","Seviye 1'de birkaç keskin tepe, üst seviyede çerçeve periyodunda güçlü bir tepe","Hiç tepe yok"],2,"Örneğin 300/400/500 µs stagger: seviye 1'de üç tepe, seviye 3'te 1200 µs'de güçlü bir tepe."],
+    ["Kayıp darbeler fark histogramını nasıl etkiler?",["Hiç etkilemez","PRI'nin katlarında ek tepeler oluşturur ve asıl tepeleri zayıflatır","Tepeleri daha keskin yapar","Yalnızca RF ölçümünü bozar"],1,"Eksik bir darbe, iki PRI uzunluğunda bir fark üretir. Dizi arama da kayıpları tolere etmelidir."],
+    ["Dizi aramada neden en az belirli sayıda darbeden oluşan zincirler kabul edilir?",["Hızı artırmak için","Rastgele çakışmaların sahte bir radar gibi görünmesini önlemek için","Bellekten tasarruf için","PRI'yi büyütmek için"],1,"Kısa zincirler tesadüfen oluşabilir. En kısa zincir uzunluğu, yanlış alarmı kontrol eder."]
+  ];
+  let i=0,score=0,answered=false;
+  function render(){
+    const box=$("quiz");
+    if(i>=Q.length){const pass=score>=7;
+      box.innerHTML='<div class="big" style="color:'+(pass?"var(--ok)":"var(--bad)")+'">'+score+' / 10</div><p style="margin:6px 0 14px">'+(pass?"Geçtin. Darbe ayrıştırma zincirini sağlam kavramışsın.":"Geçme notu 7. Zorlandığın modülleri tekrar edip yeniden dene.")+'</p><button class="btn" id="qAgain">Tekrar dene</button>';
+      $("qAgain").onclick=()=>{i=0;score=0;render()};if(pass)done("m7");return}
+    const q=Q[i];answered=false;
+    box.innerHTML='<div class="q-meta"><span>Soru '+(i+1)+' / '+Q.length+'</span><span>Puan: '+score+'</span></div><div class="q-text">'+q[0]+'</div><div class="q-opts">'+q[1].map((o,k)=>'<button data-k="'+k+'">'+o+'</button>').join("")+'</div><div class="fb" id="qfb"></div><div style="margin-top:12px"><button class="btn" id="qNext">Sonraki soru</button></div><div class="err" id="qerr"></div>';
+    box.querySelectorAll(".q-opts button").forEach(b=>b.onclick=()=>{
+      if(answered)return;answered=true;$("qerr").textContent="";
+      const k=+b.dataset.k,ok=k===q[2];if(ok)score++;
+      box.querySelectorAll(".q-opts button").forEach(x=>{if(+x.dataset.k===q[2])x.classList.add("ok");else if(x===b)x.classList.add("bad")});
+      const fb=$("qfb");fb.className="fb show "+(ok?"ok":"bad");fb.textContent=(ok?"Doğru. ":"Yanlış. ")+q[3];
+      box.querySelector(".q-meta span:last-child").textContent="Puan: "+score;
+    });
+    $("qNext").onclick=()=>{if(!answered){$("qerr").textContent="Önce bir seçenek işaretle.";return}i++;render()};
+  }
+  render();
+})();
+
+if(window.claude&&window.claude.hot&&window.claude.hot.snapshot){try{window.claude.hot.snapshot(()=>({progress}))}catch(e){}}
+})();
+</script>
+</body>
+</html>
