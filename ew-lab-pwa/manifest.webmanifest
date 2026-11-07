@@ -1,0 +1,27 @@
+{
+  "id": "./",
+  "name": "EW Lab — Elektronik Harp Akademisi",
+  "short_name": "EW Lab",
+  "description": "Etkileşimli elektronik harp ve RF eğitim laboratuvarı.",
+  "lang": "tr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0b1220",
+  "theme_color": "#101b2b",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
