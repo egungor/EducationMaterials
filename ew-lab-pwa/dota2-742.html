@@ -113,6 +113,11 @@ footer{margin-top:3rem;color:var(--mut);font-size:.85rem;border-top:1px solid va
 .hc .av{flex:0 0 80px}
 .itm .ic{position:relative;overflow:hidden}
 .itm .ic>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pic.it{width:22px;height:22px;vertical-align:-6px;margin-right:.35rem}
+.pic.it .bd{width:22px;height:22px;border-radius:4px;background:#24405a;display:grid;place-items:center;font-size:.55rem;font-weight:700;color:#cfe6ff}
+.pic.it>img{border-radius:4px}
+.pool a.item{display:flex;align-items:center;border-bottom:0}
+.pool a.item .nm{border-bottom:1px dotted rgba(159,211,255,.5)}
 </style>
 </head>
 <body>
@@ -604,12 +609,14 @@ function hexAvatar(n,k){
 
 const CDN="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/";
 const HERO_ID={"Nature's Prophet":"furion","Shadow Fiend":"nevermore","Queen of Pain":"queenofpain","Treant Protector":"treant","Clockwerk":"rattletrap","Outworld Destroyer":"obsidian_destroyer","Windranger":"windrunner","Io":"wisp","Necrophos":"necrolyte","Zeus":"zuus","Lifestealer":"life_stealer","Underlord":"abyssal_underlord","Doom":"doom_bringer","Magnus":"magnataur","Timbersaw":"shredder","Wraith King":"skeleton_king","Vengeful Spirit":"vengefulspirit","Anti-Mage":"antimage","Centaur Warrunner":"centaur"};
-const ITEM_ID={"Quarterstaff":"quarterstaff","Khanda":"angels_demise","Javelin":"javelin","Helm of the Overlord":"helm_of_the_overlord"};
+const ITEM_ID={"Khanda":"angels_demise","Eye of Skadi":"skadi","Manta Style":"manta","Slippers of Agility":"slippers","Aegis of the Immortal":"aegis","Orb of Blight":"blight_stone","Parasma":"devastator","Skull Basher":"basher","Vladmir's Offering":"vladmir","Armlet of Mordiggian":"armlet","Sage's Mask":"sobi_mask","Mantle of Intelligence":"mantle","Tumbler's Toy":"pogo_stick","Book of the Dead":"demonicon","Stygian Desolator":"desolator_2","Giant's Maul":"giant_maul","Gunpowder Gauntlets":"gunpowder_gauntlet"};
+const itemId=n=>ITEM_ID[n]||n.toLowerCase().replace(/['’]/g,"").replace(/[\s-]+/g,"_");
 const heroId=n=>HERO_ID[n]||n.toLowerCase().replace(/['’]/g,"").replace(/[\s-]+/g,"_");
 const IMG_ERR='onerror="this.remove()" loading="lazy" referrerpolicy="no-referrer"';
 function heroPic(n){return `<img src="${CDN}heroes/${heroId(n)}.png" alt="" ${IMG_ERR}>`}
 function heroSmall(n){return `<span class="pic sm"><span class="bd">${initials(n)}</span>${heroPic(n)}</span>`}
-function itemPic(n){const id=ITEM_ID[n];return id?`<img src="${CDN}items/${id}.png" alt="" ${IMG_ERR}>`:""}
+function itemPic(n){return `<img src="${CDN}items/${itemId(n)}.png" alt="" ${IMG_ERR}>`}
+function itemSmall(n){return `<span class="pic it"><span class="bd">${initials(n)}</span>${itemPic(n)}</span>`}
 /* ---------- render content ---------- */
 $("#keycards").innerHTML = KEY.map(k=>`<div class="kc"><div class="ico"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#ff8a78" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS[k.i]}</svg></div><h4>${k.t}</h4><p>${k.d}</p></div>`).join("");
 
@@ -709,6 +716,12 @@ hbar($("#spellChart"),[
   $("#tierChart").innerHTML=s+"</svg>";
 })();
 
+/* ---------- item icons in tables & lists ---------- */
+document.querySelectorAll("table a.item, .pool a.item, .chips a.item, .rec a.item").forEach(a=>{
+  const n=(a.dataset.n||a.textContent).trim();
+  if(a.closest(".pool")){a.dataset.n=n;a.innerHTML=itemSmall(n)+`<span class="nm">${a.innerHTML}</span>`;}
+  else a.insertAdjacentHTML("beforebegin",itemSmall(n));
+});
 /* ---------- links ---------- */
 document.querySelectorAll("a.hero").forEach(a=>{
   const n=a.dataset.n||a.textContent.trim();
