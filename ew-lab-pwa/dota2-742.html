@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dota 2 Patch 7.42 — Özet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d0f13; --panel:#151920; --panel2:#1b2029; --line:#2a313d;
+  --txt:#e6e8ec; --mut:#9aa3b2; --red:#d0412f; --red2:#8e2418; --gold:#e3b456;
+  --green:#4cc38a; --blue:#5aa2f0; --purple:#a981f0; --old:#6b7383;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--txt);font:15.5px/1.6 Inter,system-ui,sans-serif}
+a{color:var(--gold);text-decoration:none;border-bottom:1px dotted rgba(227,180,86,.5)}
+a:hover{color:#fff;border-bottom-color:#fff}
+a.hero{color:#ffb4a6;border-bottom-color:rgba(255,180,166,.5)}
+a.item{color:#9fd3ff;border-bottom-color:rgba(159,211,255,.5)}
+h1,h2,h3{font-family:Cinzel,serif;letter-spacing:.5px;margin:0}
+h2{font-size:1.65rem;color:#fff;display:flex;align-items:center;gap:.6rem}
+h2 .num{font-family:Inter;font-size:.8rem;background:var(--red);color:#fff;border-radius:6px;padding:.15rem .5rem}
+h3{font-size:1.08rem;color:var(--gold);margin:1.4rem 0 .5rem}
+p{margin:.5rem 0}
+.wrap{display:grid;grid-template-columns:230px 1fr;max-width:1240px;margin:0 auto;gap:2rem;padding:0 1.2rem}
+nav.toc{position:sticky;top:1rem;align-self:start;margin-top:2rem;padding:1rem;background:var(--panel);border:1px solid var(--line);border-radius:12px;font-size:.9rem}
+nav.toc b{display:block;font-family:Cinzel;color:var(--gold);margin-bottom:.4rem}
+nav.toc a{display:block;border:0;color:var(--mut);padding:.22rem 0}
+nav.toc a:hover{color:#fff}
+main{min-width:0;padding-bottom:4rem}
+section{margin-top:2.6rem;padding-top:.4rem}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.2rem 1.3rem}
+.grid{display:grid;gap:1rem}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.lead{color:var(--mut);font-size:1rem}
+.note{font-size:.85rem;color:var(--mut);border-left:3px solid var(--gold);padding:.4rem .8rem;background:rgba(227,180,86,.06);border-radius:0 8px 8px 0;margin:1rem 0}
+
+/* hero banner */
+.banner{position:relative;margin-top:1.5rem;border-radius:18px;overflow:hidden;border:1px solid var(--line);
+  background:radial-gradient(1200px 400px at 85% -10%,rgba(208,65,47,.45),transparent 60%),radial-gradient(800px 380px at 0% 120%,rgba(227,180,86,.18),transparent 60%),#12151b;padding:2.2rem 2rem 1.8rem}
+.banner svg.bg{position:absolute;right:-40px;top:-30px;opacity:.16;width:420px}
+.banner .tag{display:inline-block;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(227,180,86,.4);padding:.2rem .6rem;border-radius:99px}
+.banner h1{font-size:3.1rem;line-height:1.1;margin:.6rem 0 .3rem;font-weight:800;background:linear-gradient(90deg,#fff,#f3c98a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.banner p{max-width:720px;color:#c9ced8}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.8rem;margin-top:1.4rem;position:relative}
+.stat{background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;padding:.8rem .9rem}
+.stat b{display:block;font-size:1.7rem;font-family:Cinzel;color:#fff}
+.stat span{font-size:.8rem;color:var(--mut)}
+
+/* key change cards */
+.kc{position:relative;background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem 1.1rem}
+.kc .ico{width:44px;height:44px;border-radius:10px;display:grid;place-items:center;background:rgba(208,65,47,.15);border:1px solid rgba(208,65,47,.4);margin-bottom:.6rem}
+.kc h4{margin:0 0 .3rem;font-size:1rem}
+.kc p{font-size:.9rem;color:#c3c8d2;margin:0}
+
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{padding:.55rem .6rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--mut);font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.5px}
+td.o{color:var(--old);text-decoration:line-through}
+td.n{color:#fff;font-weight:600}
+.up{color:var(--green)} .down{color:#ff7b6b}
+.pill{display:inline-block;font-size:.72rem;padding:.08rem .45rem;border-radius:99px;font-weight:600;vertical-align:middle}
+.pill.buff{background:rgba(76,195,138,.15);color:var(--green);border:1px solid rgba(76,195,138,.4)}
+.pill.nerf{background:rgba(255,123,107,.12);color:#ff8f80;border:1px solid rgba(255,123,107,.4)}
+.pill.rework{background:rgba(169,129,240,.15);color:#c6a9ff;border:1px solid rgba(169,129,240,.4)}
+.pill.new{background:rgba(227,180,86,.15);color:var(--gold);border:1px solid rgba(227,180,86,.45)}
+.pill.gone{background:rgba(120,120,120,.18);color:#bbb;border:1px solid #555}
+
+/* charts */
+.chart svg{width:100%;height:auto;display:block}
+.legend{display:flex;gap:1rem;flex-wrap:wrap;font-size:.82rem;color:var(--mut);margin-top:.4rem}
+.legend i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:.35rem}
+
+/* item cards */
+.itm{display:flex;gap:.9rem;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.itm .ic{flex:0 0 58px;height:58px;border-radius:10px;display:grid;place-items:center;font-family:Cinzel;font-weight:800;font-size:1.15rem;color:#fff;border:1px solid rgba(255,255,255,.15);box-shadow:inset 0 0 18px rgba(0,0,0,.45)}
+.itm h4{margin:0;font-size:1rem}
+.itm .cost{font-size:.8rem;color:var(--gold);font-weight:600}
+.itm p{margin:.3rem 0 0;font-size:.88rem;color:#c3c8d2}
+.itm .rec{font-size:.8rem;color:var(--mut);margin-top:.3rem}
+
+/* hero cards */
+.hc{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1rem;display:flex;gap:.9rem}
+.hc .av{flex:0 0 54px}
+.hc h4{margin:0 0 .15rem;font-size:1rem}
+.hc ul{margin:.35rem 0 0;padding-left:1.05rem;font-size:.88rem;color:#c3c8d2}
+.hc li{margin:.15rem 0}
+
+/* neutral tier grid */
+.tier{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:.8rem}
+.tier header{display:flex;justify-content:space-between;align-items:center;padding:.55rem .9rem;background:var(--panel2);font-weight:600}
+.tier header span{color:var(--mut);font-size:.82rem;font-weight:500}
+.pools{display:grid;grid-template-columns:repeat(4,1fr)}
+.pool{padding:.6rem .8rem;border-right:1px solid var(--line);font-size:.86rem}
+.pool:last-child{border-right:0}
+.pool small{display:block;color:var(--mut);font-size:.72rem;text-transform:uppercase;letter-spacing:.6px;margin-bottom:.2rem}
+.pool a{display:block;width:max-content;max-width:100%;margin:.12rem 0}
+@media (max-width:900px){.wrap{grid-template-columns:1fr}nav.toc{display:none}.banner h1{font-size:2.3rem}.pools{grid-template-columns:repeat(2,1fr)}.pool:nth-child(2){border-right:0}}
+footer{margin-top:3rem;color:var(--mut);font-size:.85rem;border-top:1px solid var(--line);padding-top:1rem}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem}
+.chip{background:var(--panel2);border:1px solid var(--line);border-radius:99px;padding:.2rem .65rem;font-size:.85rem}
+.pic{position:relative;display:inline-block;flex:0 0 auto}
+.pic>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:8px}
+.pic.sm{width:44px;height:25px;vertical-align:middle;margin-right:.45rem}
+.pic.sm .bd{width:44px;height:25px;border-radius:5px;background:#2a313d;display:grid;place-items:center;font-size:.6rem;font-weight:700;color:#bbb}
+.pic.sm>img{border-radius:5px}
+.hc .av .pic{width:80px;height:45px}
+.hc .av{flex:0 0 80px}
+.itm .ic{position:relative;overflow:hidden}
+.itm .ic>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="toc">
+  <b>İçindekiler</b>
+  <a href="#ozet">Bir bakışta</a>
+  <a href="#mekanik">Temel mekanikler</a>
+  <a href="#potency">Item Potency</a>
+  <a href="#buyu">Büyü gücü düşüşü</a>
+  <a href="#ekonomi">Ekonomi &amp; XP</a>
+  <a href="#hedefler">Tormentor, Roshan, dalgalar</a>
+  <a href="#harita">Harita &amp; kamplar</a>
+  <a href="#itemler">Yeni &amp; kaldırılan itemler</a>
+  <a href="#itemdegisim">Item değişiklikleri</a>
+  <a href="#neutral">Neutral itemler</a>
+  <a href="#heroes">Hero reworkleri</a>
+  <a href="#herosayi">Diğer hero değişiklikleri</a>
+  <a href="#istemci">İstemci güncellemeleri</a>
+  <a href="#kaynak">Kaynaklar</a>
+</nav>
+
+<main>
+<!-- BANNER -->
+<div class="banner">
+  <svg class="bg" viewBox="0 0 200 200" aria-hidden="true"><g fill="none" stroke="#fff" stroke-width="3"><path d="M100 10 L180 55 L180 145 L100 190 L20 145 L20 55 Z"/><path d="M100 40 L152 70 L152 130 L100 160 L48 130 L48 70 Z"/><path d="M60 140 L140 60 M70 60 L140 130"/></g></svg>
+  <span class="tag">Gameplay Update · 18 Kasım 2026</span>
+  <h1>Patch 7.42</h1>
+  <p>7.41'den (24 Mart) bu yana gelen ilk numaralı büyük yama. Valve temel sayıların neredeyse hepsine dokundu: hero canı, büyü hasarı, altın ve XP eğrisi, illüzyonların item etkileri, neutral item sistemi, harita ve 127 hero'nun tamamı.</p>
+  <div class="stats">
+    <div class="stat"><b>127</b><span>hero değişti (85'inde talent)</span></div>
+    <div class="stat"><b>6+1</b><span>yeni item + Quarterstaff'ın dönüşü</span></div>
+    <div class="stat"><b>3</b><span>item kaldırıldı</span></div>
+    <div class="stat"><b>13</b><span>neutral item kaldırıldı</span></div>
+    <div class="stat"><b>4</b><span>neutral tier (önceden 5)</span></div>
+    <div class="stat"><b>15:00</b><span>ilk Tormentor (önceden 20:00)</span></div>
+  </div>
+</div>
+
+<!-- OZET -->
+<section id="ozet">
+  <h2><span class="num">01</span> Bir bakışta: en büyük 8 değişiklik</h2>
+  <p class="lead">Yamayı tek ekranda anlamak isteyenler için. Ayrıntılar aşağıdaki bölümlerde.</p>
+  <div class="grid g4" id="keycards"></div>
+</section>
+
+<!-- MEKANIK -->
+<section id="mekanik">
+  <h2><span class="num">02</span> Temel mekanikler</h2>
+  <div class="grid g2">
+    <div class="panel">
+      <h3 style="margin-top:0">Hero canı yeniden dengelendi</h3>
+      <table>
+        <tr><th>Değer</th><th>Eski</th><th>Yeni</th></tr>
+        <tr><td>Temel can</td><td class="o">120</td><td class="n up">200</td></tr>
+        <tr><td>Strength başına can</td><td class="o">22</td><td class="n down">20</td></tr>
+        <tr><td>Intelligence başına büyü direnci</td><td class="o">%0,1</td><td class="n up">%0,125</td></tr>
+      </table>
+      <p style="font-size:.9rem;color:#c3c8d2">İki eğri <b>40 Strength</b>'te kesişiyor: düşük Strength'li hero'lar (özellikle erken oyunda) daha dayanıklı, çok yüksek Strength'e ulaşan geç oyun hero'ları biraz daha az can alıyor. Örneğin 100 Strength'te maksimum can 2.320'den 2.200'e iniyor.</p>
+    </div>
+    <div class="panel chart">
+      <h3 style="margin-top:0">Strength → Maksimum can</h3>
+      <div id="hpChart"></div>
+      <div class="legend"><span><i style="background:var(--old)"></i>7.41 (120 + 22×Str)</span><span><i style="background:var(--red)"></i>7.42 (200 + 20×Str)</span></div>
+    </div>
+  </div>
+  <div class="grid g3" style="margin-top:1rem">
+    <div class="panel"><h3 style="margin-top:0">Pip (vuruş sayılı) can</h3><p style="font-size:.9rem">Hero, Roshan, kule ve çeşmeler 1 tam pip vurur; illüzyonlar ve creepler ¼ pip. Courier, Psionic Trap, Zeus'un Nimbus'u ve Roshan's Banner artık "Fragile": melee hero'lar bunlara 2 pip vurur.</p></div>
+    <div class="panel"><h3 style="margin-top:0">Break kuralları</h3><p style="font-size:.9rem">Bazı innate'ler Break ile tamamen kapanıyor (<a class="hero">Morphling</a>, <a class="hero">Leshrac</a>, <a class="hero">Terrorblade</a>, <a class="hero">Io</a>). Bazıları ise "kısmi" Break alıyor: yeni stack kazanılmaz ama mevcutlar kalır (<a class="hero">Windranger</a> Tailwind, <a class="hero">Dazzle</a> Weave, <a class="hero">Clinkz</a>, <a class="hero">Spirit Breaker</a>).</p></div>
+    <div class="panel"><h3 style="margin-top:0">Debuff immunity &amp; lifesteal</h3><p style="font-size:.9rem">Debuff immunity'yi delen 24 yetenek artık onun büyü direncini yok saymıyor (ör. <a class="hero">Pudge</a> Dismember, <a class="hero">Magnus</a> Reverse Polarity). Aynı item'ın birden fazla kopyasından gelen Spell Lifesteal artık toplanıyor: iki <a class="item">Voodoo Mask</a> = %30.</p></div>
+  </div>
+</section>
+
+<!-- POTENCY -->
+<section id="potency">
+  <h2><span class="num">03</span> Yeni stat: Item Potency</h2>
+  <div class="grid g2">
+    <div class="panel">
+      <p><b>Item Potency</b>, hero saldırılarında bulunan yeni bir özellik. Varsayılan değer %100 ve on-hit item etkilerinin ne kadar güçlü uygulanacağını belirliyor. Aynı debuff birden çok kaynaktan geliyorsa en yüksek Potency geçerli olur.</p>
+      <p>En büyük sonucu: <b>illüzyonlar artık çoğu on-hit etkiyi uygulayabiliyor</b> (varsayılan %20 gücünde). <a class="item">Orb of Blight</a>, <a class="item">Orb of Frost</a>, <a class="item">Orb of Corrosion</a>, <a class="item">Desolator</a>, <a class="item">Diffusal Blade</a>, <a class="item">Disperser</a>, <a class="item">Eye of Skadi</a>, <a class="item">Mage Slayer</a>, <a class="item">Monkey King Bar</a> ve <a class="item">Parasma</a> bu listede. <a class="item">Skull Basher</a> gibi birkaç item hariç.</p>
+      <div class="note">Örnek (Valve'ın verdiği): Tier 4 "Evolved" enchantment +%20 Potency veriyor; böylece <a class="item">Desolator</a> 6 yerine 7,2 zırh düşürüyor.</div>
+      <p style="font-size:.9rem"><a class="hero">Luna</a>'nın Moon Glaives sekmeleri artık tam saldırı (azaltılmış hasarla) ve her sekme Potency'yi %40 düşürüyor; lifesteal ve kritik sekmelere uygulanmıyor.</p>
+    </div>
+    <div class="panel chart">
+      <h3 style="margin-top:0">Kaynağa göre Item Potency</h3>
+      <div id="potChart"></div>
+    </div>
+  </div>
+</section>
+
+<!-- BUYU -->
+<section id="buyu">
+  <h2><span class="num">04</span> Büyü gücü düşüşü (Spell Power Reduction)</h2>
+  <p class="lead">Item'lardan gelen spell amp, alan ve cast range katkıları azaltıldı; pek çok büyünün ham hasarı düşürüldü. Temel canın 200'e çıkmasıyla birlikte erken oyunda "tek kombo ile öldürme" daha zor.</p>
+  <div class="grid g2">
+    <div class="panel chart">
+      <h3 style="margin-top:0">Ultimate hasarları (maks. seviye)</h3>
+      <div id="spellChart"></div>
+      <div class="legend"><span><i style="background:var(--old)"></i>7.41</span><span><i style="background:var(--blue)"></i>7.42</span></div>
+    </div>
+    <div class="panel">
+      <h3 style="margin-top:0">Item tarafı</h3>
+      <table>
+        <tr><th>Item</th><th>Özellik</th><th>Eski</th><th>Yeni</th></tr>
+        <tr><td><a class="item">Kaya</a></td><td>Spell amp</td><td class="o">+%10</td><td class="n down">+%6</td></tr>
+        <tr><td><a class="item">Aether Lens</a></td><td>Cast range</td><td class="o">+225</td><td class="n down">+200</td></tr>
+        <tr><td><a class="item">Octarine Core</a></td><td>CD azaltma</td><td class="o">%25</td><td class="n down">%20</td></tr>
+        <tr><td><a class="item">Shiva's Guard</a></td><td>Alan</td><td class="o">+75</td><td class="n down">+60</td></tr>
+        <tr><td><a class="item">Eye of Skadi</a></td><td>Yavaşlatma (melee/ranged)</td><td class="o">%25 / %50</td><td class="n down">%20 / %40</td></tr>
+      </table>
+      <h3>Etkilenen büyüler</h3>
+      <div class="chips">
+        <span class="chip"><a class="hero">Lina</a> · Laguna Blade 760→690</span>
+        <span class="chip"><a class="hero">Lion</a> · Finger 850→800</span>
+        <span class="chip"><a class="hero">Enigma</a> · Black Hole 200→180/sn</span>
+        <span class="chip"><a class="hero">Invoker</a> · Sun Strike 575→495</span>
+        <span class="chip"><a class="hero">Kunkka</a> · Ghostship 600→550</span>
+        <span class="chip"><a class="hero">Outworld Destroyer</a> · Sanity's Eclipse 400→360</span>
+        <span class="chip"><a class="hero">Skywrath Mage</a> · Mystic Flare 1600→1450</span>
+        <span class="chip"><a class="hero">Hoodwink</a> · Sharpshooter 1350→1200</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EKONOMI -->
+<section id="ekonomi">
+  <h2><span class="num">05</span> Ekonomi &amp; deneyim</h2>
+  <div class="grid g2">
+    <div class="panel chart">
+      <h3 style="margin-top:0">Hero öldürme ödülü (killstreak hariç)</h3>
+      <div id="bountyChart"></div>
+      <div class="legend"><span><i style="background:var(--old)"></i>7.41: 125 + 8×seviye</span><span><i style="background:var(--gold)"></i>7.42: 100 + 10×seviye</span></div>
+      <p style="font-size:.88rem;color:#c3c8d2">Eğriler ~12,5. seviyede kesişiyor: düşük seviyeli hero'yu öldürmek artık daha az, yüksek seviyeliyi öldürmek daha çok altın getiriyor (seviye 5: 165→150, seviye 30: 365→400).</p>
+    </div>
+    <div class="panel">
+      <h3 style="margin-top:0">Altın</h3>
+      <ul style="font-size:.92rem;padding-left:1.1rem">
+        <li><b>Pasif altın</b> artık sabit dakikada 90 (önceden 60. dakikaya kadar 111'e çıkıyordu).</li>
+        <li>Bina ödülleri artık değişken değil ve erken kuleler daha az veriyor.</li>
+      </ul>
+      <table>
+        <tr><th>Bina</th><th>Son vuruş</th><th>Oyuncu başı</th></tr>
+        <tr><td>Tier 1 kule</td><td><span class="o" style="text-decoration:line-through;color:var(--old)">110–130</span> → <b>100</b></td><td><span style="text-decoration:line-through;color:var(--old)">90</span> → <b>75</b></td></tr>
+        <tr><td>Tier 2 kule</td><td><span style="text-decoration:line-through;color:var(--old)">130–150</span> → <b>125</b></td><td><span style="text-decoration:line-through;color:var(--old)">110</span> → <b>100</b></td></tr>
+        <tr><td>Tier 3 kule</td><td><span style="text-decoration:line-through;color:var(--old)">150–170</span> → <b>150</b></td><td>—</td></tr>
+        <tr><td>Tier 4 kule</td><td><span style="text-decoration:line-through;color:var(--old)">170–190</span> → <b>175</b></td><td><span style="text-decoration:line-through;color:var(--old)">145</span> → <b>150</b></td></tr>
+        <tr><td>Roshan</td><td>—</td><td><span style="text-decoration:line-through;color:var(--old)">135</span> → <b>125</b></td></tr>
+      </table>
+      <h3>Deneyim</h3>
+      <ul style="font-size:.92rem;padding-left:1.1rem">
+        <li>Herkes <b>dakikada 50 pasif XP</b> alıyor — ölüyken bile.</li>
+        <li>2–18. seviyeler daha pahalı (ör. 10. seviye 1.000→1.225); 19 ve sonrası değişmedi. 30. seviyeye toplam XP: 64.400 → 66.600.</li>
+        <li>Wisdom Shrine: kullanım başına 200 + 300 → 200 + 200.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- HEDEFLER -->
+<section id="hedefler">
+  <h2><span class="num">06</span> Tormentor, Roshan ve creep dalgaları</h2>
+  <div class="panel chart">
+    <h3 style="margin-top:0">Yeni maç zaman çizelgesi</h3>
+    <div id="timeline"></div>
+  </div>
+  <div class="grid g3" style="margin-top:1rem">
+    <div class="panel">
+      <h3 style="margin-top:0">Tormentor</h3>
+      <table>
+        <tr><td>İlk doğuş</td><td class="o">20:00</td><td class="n">15:00</td></tr>
+        <tr><td>Unyielding Shield</td><td class="o">3.000</td><td class="n">4.000</td></tr>
+        <tr><td>Yansıtma</td><td class="o">%35</td><td class="n">%15 (+%5/ölüm, maks %30)</td></tr>
+        <tr><td>Oyuncu başı altın</td><td class="o">175</td><td class="n">125 (+50/ölüm)</td></tr>
+      </table>
+      <p style="font-size:.88rem">2. ölümden itibaren her seferinde bir <a class="item">Aghanim's Shard</a> da düşürüyor (takımda zaten varsa altın verilir).</p>
+    </div>
+    <div class="panel" style="border-color:rgba(227,180,86,.45)">
+      <h3 style="margin-top:0">Yeni: Greater Horn of Battle <span class="pill new">YENİ</span></h3>
+      <svg viewBox="0 0 300 90" style="width:100%;height:auto" aria-hidden="true">
+        <defs><linearGradient id="hg" x1="0" x2="1"><stop offset="0" stop-color="#e3b456"/><stop offset="1" stop-color="#8e5a1a"/></linearGradient></defs>
+        <path d="M20 60 Q60 20 120 30 L130 50 Q70 50 30 72 Z" fill="url(#hg)"/>
+        <g fill="#d0412f"><rect x="160" y="18" width="14" height="14" rx="3"/><rect x="180" y="18" width="14" height="14" rx="3"/><rect x="200" y="18" width="14" height="14" rx="3"/><rect x="160" y="40" width="14" height="14" rx="3"/><rect x="180" y="40" width="14" height="14" rx="3"/><rect x="200" y="40" width="14" height="14" rx="3"/><rect x="160" y="62" width="14" height="14" rx="3"/><rect x="180" y="62" width="14" height="14" rx="3"/><rect x="200" y="62" width="14" height="14" rx="3"/></g>
+        <g fill="#e3b456"><rect x="222" y="18" width="20" height="14" rx="3"/><rect x="222" y="40" width="20" height="14" rx="3"/><rect x="222" y="62" width="20" height="14" rx="3"/></g>
+        <text x="250" y="29" fill="#9aa3b2" font-size="10">top</text><text x="250" y="51" fill="#9aa3b2" font-size="10">mid</text><text x="250" y="73" fill="#9aa3b2" font-size="10">bot</text>
+      </svg>
+      <p style="font-size:.88rem">Tormentor her ölümde bunu kesin düşürüyor. Global menzil, mana ve cooldown yok, tek şarj, çantadan bile kullanılabiliyor. Kullanınca <b>her koridora bir mega creep dalgası</b> (her birinde en az bir siege ve bir Flagbearer) çağırıyor.</p>
+    </div>
+    <div class="panel">
+      <h3 style="margin-top:0">Roshan &amp; Glyph</h3>
+      <ul style="font-size:.9rem;padding-left:1.1rem">
+        <li>Roshan'ın yeniden doğma süresi her ölümde 1 dk kısalıyor (en az 5 dk).</li>
+        <li>Zamanlayıcı artık <a class="item">Aegis of the Immortal</a>'ı kimin taşıdığını gösteriyor.</li>
+        <li><b>Glyph of Fortification</b>: bina yıkılınca sıfırlanmıyor; 2 şarj, 6 dakikada dolum, kullanımlar arası 7 sn.</li>
+      </ul>
+      <h3>Creep dalgaları</h3>
+      <ul style="font-size:.9rem;padding-left:1.1rem">
+        <li>30:00'da melee creep sayısı artık artmıyor; onun yerine 30:00'dan sonra her dalgada bir <b>Flagbearer</b>.</li>
+        <li>Ek ranged creep 35:00'da (önceden 40:00).</li>
+        <li>Siege: 30:00'dan itibaren 2,5 dakikada bir, 60:00'dan sonra iki tane.</li>
+        <li>Koridordan çekilen creepler 10 sn içinde %25'e kadar yavaşlıyor (safelane T1 yakınındaki çekişler hariç).</li>
+      </ul>
+    </div>
+  </div>
+  <div class="grid g2" style="margin-top:1rem">
+    <div class="panel"><h3 style="margin-top:0">Runeler, Outpost'lar</h3><p style="font-size:.9rem"><b>Invisibility Rune</b> alındıktan 2 sn sonra bir "Disguise" buff'ı veriyor: düşman hero ve binalardan uzaktayken True Sight'a karşı koruyor (hız bonusu olmayan bir Smoke gibi). Outpost'lar artık silence altındayken de alınabiliyor.</p></div>
+    <div class="panel"><h3 style="margin-top:0"><a class="item">Smoke of Deceit</a> güçlendi</h3>
+      <table><tr><td>Stok</td><td class="o">3</td><td class="n up">4</td></tr><tr><td>Yenilenme</td><td class="o">420 sn</td><td class="n up">330 sn</td></tr><tr><td>Hız bonusu</td><td class="o">%15</td><td class="n up">%25</td></tr><tr><td>Süre</td><td class="o">45 sn</td><td class="n up">50 sn</td></tr></table>
+    </div>
+  </div>
+</section>
+
+<!-- HARITA -->
+<section id="harita">
+  <h2><span class="num">07</span> Harita ve neutral kamplar</h2>
+  <div class="grid g2">
+    <div class="panel chart">
+      <h3 style="margin-top:0">Neler taşındı? <span style="font-family:Inter;font-size:.75rem;color:var(--mut)">(şematik, ölçekli değil · kapıların eski yerleri yaklaşık)</span></h3>
+      <svg viewBox="0 0 420 420" aria-label="Harita şeması">
+        <defs>
+          <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#e3b456"/></marker>
+        </defs>
+        <rect x="10" y="10" width="400" height="400" rx="18" fill="#141a14" stroke="#2a313d"/>
+        <path d="M10 410 L10 10 L410 10 Z" fill="#1d1414" opacity=".55"/>
+        <path d="M10 410 L410 410 L410 10 Z" fill="#14201a" opacity=".55"/>
+        <!-- rim streams (flooded outer rim) -->
+        <path d="M335 26 L120 26" stroke="#2f5d86" stroke-width="12" fill="none" opacity=".55" stroke-linecap="round"/>
+        <path d="M85 394 L300 394" stroke="#2f5d86" stroke-width="12" fill="none" opacity=".55" stroke-linecap="round"/>
+        <text x="300" y="40" fill="#6f93b8" font-size="8.5" text-anchor="middle">üst kenar akıntısı</text>
+        <text x="120" y="388" fill="#6f93b8" font-size="8.5" text-anchor="middle">alt kenar akıntısı</text>
+        <!-- river -->
+        <path d="M40 60 Q130 150 210 210 Q290 270 370 380" stroke="#2f5d86" stroke-width="18" fill="none" opacity=".7" stroke-linecap="round"/>
+        <!-- lanes -->
+        <g stroke="#5b4a33" stroke-width="7" fill="none" stroke-linecap="round" opacity=".9">
+          <path d="M50 370 L50 50 L370 50"/><path d="M50 370 L370 370 L370 50"/><path d="M60 360 L360 60"/>
+        </g>
+        <!-- bases -->
+        <circle cx="45" cy="375" r="26" fill="#2b5a3c" stroke="#4cc38a"/><text x="45" y="379" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">Radiant</text>
+        <circle cx="375" cy="45" r="26" fill="#5a2b2b" stroke="#d0412f"/><text x="375" y="49" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">Dire</text>
+        <!-- dire fountain move -->
+        <circle cx="402" cy="18" r="6" fill="none" stroke="#9aa3b2" stroke-dasharray="3 2"/>
+        <circle cx="392" cy="28" r="6" fill="#d0412f"/>
+        <!-- old gates (dashed, approximate) -->
+        <g fill="none" stroke="#9aa3b2" stroke-dasharray="4 3" stroke-width="2"><circle cx="140" cy="88" r="10"/><circle cx="282" cy="332" r="10"/></g>
+        <text x="140" y="110" fill="#9aa3b2" font-size="9.5" text-anchor="middle">eski kapı (yaklaşık)</text>
+        <text x="282" y="318" fill="#9aa3b2" font-size="9.5" text-anchor="middle">eski kapı (yaklaşık)</text>
+        <!-- new gates on the rims -->
+        <g fill="#a981f0" stroke="#fff" stroke-width="1.5"><circle cx="215" cy="26" r="10"/><circle cx="205" cy="394" r="10"/></g>
+        <path d="M150 80 Q180 50 206 33" stroke="#e3b456" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+        <path d="M272 340 Q240 370 214 387" stroke="#e3b456" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+        <text x="232" y="20" fill="#c6a9ff" font-size="11" font-weight="700">Twin Gate (üst kenar)</text>
+        <text x="190" y="380" fill="#c6a9ff" font-size="11" font-weight="700" text-anchor="end">Twin Gate (alt kenar)</text>
+        <!-- mid towers -->
+        <g fill="#4cc38a"><rect x="128" y="286" width="9" height="9"/><rect x="168" y="246" width="9" height="9"/></g>
+        <g fill="#d0412f"><rect x="244" y="168" width="9" height="9"/><rect x="284" y="128" width="9" height="9"/></g>
+        <path d="M172 240 L190 222" stroke="#e3b456" stroke-width="2" marker-end="url(#ar)"/>
+        <path d="M248 162 L266 144" stroke="#e3b456" stroke-width="2" marker-end="url(#ar)"/>
+        <text x="196" y="236" fill="#e3b456" font-size="10">mid kuleleri</text>
+        <text x="196" y="248" fill="#e3b456" font-size="10">Dire yönüne kaydı</text>
+        <text x="404" y="78" fill="#9aa3b2" font-size="8.5" text-anchor="end">çeşme ~300 birim</text><text x="404" y="88" fill="#9aa3b2" font-size="8.5" text-anchor="end">Ancient'a yakın</text>
+      </svg>
+      <p style="font-size:.82rem;color:var(--mut)">Mid T1 kuleleri ~350, T2 kuleleri ~260 birim Radiant üssünden uzaklaştırıldı (mesafeleri eşitlemek için). Radiant mid dalgası artık Dire'daki gibi T3'ün önünde doğuyor.</p>
+    </div>
+    <div class="panel">
+      <h3 style="margin-top:0">Harita değişiklikleri</h3>
+      <ul style="font-size:.92rem;padding-left:1.1rem">
+        <li><b>Twin Gates</b> nehrin uçlarındaki yüksek zeminden haritanın üst ve alt dış kenarına (su basmış kenar akıntılarına) taşındı; kapılardan biri eski küçük su kampının yerini aldı.</li>
+        <li>Küçük su kampları nehir uçlarına yaklaştı; orta boy kamplar eski kapıların yüksek zeminine geçti.</li>
+        <li>Mid nehri yeniden şekillendi, görüş hatlarını kesmek için ağaçlar eklendi.</li>
+        <li>Dire çeşmesi ~300 birim Dire Ancient'a yaklaştı; çeşme True Sight yarıçapı 1.200 → 1.800.</li>
+        <li>Siege creepler artık hero'lara saldıran kulelere dönmüyor.</li>
+      </ul>
+      <h3>Neutral kamplar: "ev ormanı"</h3>
+      <p style="font-size:.9rem">Amfibi ve ancient olmayan her kamp artık tek bir tarafa ait ve sadece orada doğuyor. Neutral creepler her iki takımın defender kapılarından geçebiliyor.</p>
+      <table>
+        <tr><th>Durum</th><th>Kamp</th><th>İçerik</th></tr>
+        <tr><td><span class="pill new">Yeni</span></td><td>Radigull (Radiant, orta)</td><td>2 Radigull</td></tr>
+        <tr><td><span class="pill new">Yeni</span></td><td>Odobenus (Dire, orta)</td><td>1 Frostmage + 2 Footman</td></tr>
+        <tr><td><span class="pill new">Yeni</span></td><td>Eimermole (Radiant, büyük)</td><td>1 Foreman + 1 Eimermole</td></tr>
+        <tr><td><span class="pill new">Yeni</span></td><td>Ancient Ogre Seal</td><td>1 Ogre Seal + 2 Pup</td></tr>
+        <tr><td><span class="pill gone">Kalktı</span></td><td colspan="2">Orta Centaur, büyük Warpine Raider, Ancient Thunderhide</td></tr>
+        <tr><td><span class="pill rework">Değişti</span></td><td>Kobold</td><td>3 yerine 2 Kobold, can 240→280, ödül 3–5 → 6–8</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ITEMLER -->
+<section id="itemler">
+  <h2><span class="num">08</span> Yeni ve kaldırılan itemler</h2>
+  <div class="grid g2" id="newitems"></div>
+  <div class="panel" style="margin-top:1rem">
+    <h3 style="margin-top:0">Oyundan kaldırılanlar</h3>
+    <div class="grid g3">
+      <div class="itm"><div class="ic" style="background:#333;opacity:.6">J<img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/items/javelin.png" alt="" style="filter:grayscale(1)" onerror="this.remove()" loading="lazy" referrerpolicy="no-referrer"></div><div><h4><a class="item">Javelin</a> <span class="pill gone">Kaldırıldı</span></h4><p>Tariflerdeki yerini <a class="item">Quarterstaff</a> alıyor.</p></div></div>
+      <div class="itm"><div class="ic" style="background:#333;opacity:.6">K<img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/items/angels_demise.png" alt="" style="filter:grayscale(1)" onerror="this.remove()" loading="lazy" referrerpolicy="no-referrer"></div><div><h4><a class="item" data-n="Khanda">Khanda</a> <span class="pill gone">Kaldırıldı</span></h4><p>Kritik + büyü hasarı item'ı oyundan çıktı.</p></div></div>
+      <div class="itm"><div class="ic" style="background:#333;opacity:.6">H<img src="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/items/helm_of_the_overlord.png" alt="" style="filter:grayscale(1)" onerror="this.remove()" loading="lazy" referrerpolicy="no-referrer"></div><div><h4><a class="item">Helm of the Overlord</a> <span class="pill gone">Kaldırıldı</span></h4><p>Dominator yükseltmesi artık yok.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ITEM DEGISIM -->
+<section id="itemdegisim">
+  <h2><span class="num">09</span> Önemli item değişiklikleri</h2>
+  <div class="panel" style="overflow-x:auto">
+    <table>
+      <tr><th>Item</th><th>Değişiklik</th><th></th></tr>
+      <tr><td><a class="item">Butterfly</a></td><td>Artık <a class="item">Quarterstaff</a>'tan yapılıyor. Fiyat 5.450 → 5.000. Evasion %35 → %30; +30 saldırı hızı.</td><td><span class="pill rework">Tarif</span></td></tr>
+      <tr><td><a class="item">Monkey King Bar</a></td><td>Quarterstaff'tan. Hasar +50 → +55. Melee'ler +50 menzil bonusunu kaybediyor. Pierce illüzyonlarla çalışıyor.</td><td><span class="pill rework">Tarif</span></td></tr>
+      <tr><td><a class="item">Bloodthorn</a></td><td>Javelin yok, tarif 600 → 1.350, toplam 6.400 → 6.250. Pierce kaldırıldı.</td><td><span class="pill nerf">Nerf</span></td></tr>
+      <tr><td><a class="item">Mask of Madness</a></td><td>Quarterstaff'tan. 1.900 → 1.800. Hasar +20 → +15, +10 saldırı hızı.</td><td><span class="pill rework">Tarif</span></td></tr>
+      <tr><td><a class="item">Heaven's Halberd</a></td><td><a class="item">Ogre Axe</a> + <a class="item">Helm of Iron Will</a> ile yeniden. 3.300 → 2.400. Evasion yok, zırh 9 → 4,5, +12 Str. Disarm menzili 750 → 500.</td><td><span class="pill rework">Rework</span></td></tr>
+      <tr><td><a class="item">Abyssal Blade</a></td><td><a class="item">Sange</a> yerine <a class="item">Dragon Lance</a>'ten. 6.250 → 6.150. +15 Agi; melee'lere +25 menzil.</td><td><span class="pill rework">Tarif</span></td></tr>
+      <tr><td><a class="item">Crimson Guard</a></td><td><a class="item">Buckler</a> gerekiyor; tarif 1.050 → 625 (toplam aynı 3.725). Zırh +4 → +5; Guard dispel edilebilir.</td><td><span class="pill rework">Tarif</span></td></tr>
+      <tr><td><a class="item">Buckler</a></td><td>Zırh +1 → +2; aura 2 → 1 ve Vladmir/Assault auralarıyla yığılmıyor.</td><td><span class="pill rework">Değişti</span></td></tr>
+      <tr><td><a class="item">Witch Blade</a></td><td>Orb of Venom yok, tarif 300 → 650 (toplam 2.775). Yavaşlatma Potency ile ölçekleniyor.</td><td><span class="pill rework">Tarif</span></td></tr>
+      <tr><td><a class="item">Maelstrom</a></td><td>Tarifte Quarterstaff. Chain Lightning şansı Potency ile ölçekleniyor.</td><td><span class="pill rework">Tarif</span></td></tr>
+      <tr><td><a class="item">Orb of Corrosion</a></td><td>İki <a class="item">Slippers of Agility</a>'den. 1.050 → 880. İllüzyonlarla çalışıyor, debuff immunity deliyor.</td><td><span class="pill buff">Buff</span></td></tr>
+      <tr><td><a class="item">Sange</a> / <a class="item">Yasha</a> / <a class="item">Kaya</a></td><td>Her biri 2.100 → 2.000; ikili kombinasyonlar 4.200 → 4.000. Yasha hareket hızı %10 → %6.</td><td><span class="pill rework">Fiyat</span></td></tr>
+      <tr><td><a class="item">Arcane Boots</a></td><td>+45 → +50 hız, +125 → +150 mana, CD 55 → 50 sn.</td><td><span class="pill buff">Buff</span></td></tr>
+      <tr><td><a class="item">Phase Boots</a></td><td>+45 (ranged) / +55 (melee) hareket hızı.</td><td><span class="pill rework">Değişti</span></td></tr>
+      <tr><td><a class="item">Aether Lens</a></td><td>2.275 → 2.100; cast range +225 → +200.</td><td><span class="pill rework">Değişti</span></td></tr>
+      <tr><td><a class="item">Tranquil Boots</a></td><td>Break pasifinin adı "Respite" oldu.</td><td><span class="pill rework">İsim</span></td></tr>
+      <tr><td colspan="3" style="color:var(--mut);font-size:.88rem">Ucuzlayanlar: <a class="item">Meteor Hammer</a>, <a class="item">Manta Style</a>, <a class="item">Guardian Greaves</a>, <a class="item">Blade Mail</a>, <a class="item">Pavise</a>. <a class="item">Urn of Shadows</a> 50 altın pahalandı.</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- NEUTRAL -->
+<section id="neutral">
+  <h2><span class="num">10</span> Neutral item sistemi</h2>
+  <div class="grid g2">
+    <div class="panel">
+      <p><b>5 tier → 4 tier.</b> Her tier'da 3'er artifact'tan oluşan <b>4 havuz</b> var; her havuzdan birini seçiyorsun. Tüm seçenekler maç başında sabitleniyor ve Neutrals sekmesinde görünüyor.</p>
+      <ul style="font-size:.92rem;padding-left:1.1rem">
+        <li>Tier 4 için Madstone maliyeti 10 → 14; her yeniden üretim +6 (önceden +10).</li>
+        <li>65:00'dan sonra "sonsuz Madstone" dönemi.</li>
+        <li>Enchantment'ların çoğu artık Tier 1–3. Tier 4 "Evolved": ana özelliğe +20 (önceden +40) ve +%20 Item Potency.</li>
+        <li><a class="item">Revenant's Brooch</a> artık bir neutral item.</li>
+        <li><b>Red Ledger</b> (yeni, T1): ortak bir özelliği paylaşan 2–5 düşman hero'yu işaretliyor, onları öldürünce ek altın.</li>
+      </ul>
+    </div>
+    <div class="panel chart"><h3 style="margin-top:0">Tier açılış süreleri</h3><div id="tierChart"></div></div>
+  </div>
+  <div style="margin-top:1rem" id="tiers"></div>
+  <div class="panel">
+    <h3 style="margin-top:0">Kaldırılan 13 neutral item</h3>
+    <div class="chips" id="removedNeutrals"></div>
+  </div>
+</section>
+
+<!-- HEROES -->
+<section id="heroes">
+  <h2><span class="num">11</span> Hero reworkleri ve büyük değişiklikler</h2>
+  <p class="lead">127 hero'nun tamamı değişti. Aşağıda en çok oynanışı değiştirenler var. İsimler resmi Dota 2 hero sayfalarına bağlanıyor.</p>
+  <div class="grid g2" id="reworks"></div>
+</section>
+
+<section id="herosayi">
+  <h2><span class="num">12</span> Diğer dikkat çeken hero değişiklikleri</h2>
+  <div class="grid g2">
+    <div class="panel"><h3 style="margin-top:0"><span class="pill buff">Güçlenenler</span></h3><div id="buffs"></div></div>
+    <div class="panel"><h3 style="margin-top:0"><span class="pill nerf">Zayıflayanlar</span></h3><div id="nerfs"></div></div>
+  </div>
+  <div class="note">Güçlendi/zayıfladı gruplaması, yama notlarındaki değişikliklerin yorumuna dayanıyor; kazanma oranı verisi değil. Her hero'nun tam listesi için resmi notlara bakın.</div>
+</section>
+
+<section id="istemci">
+  <h2><span class="num">13</span> İstemci ve performans güncellemeleri</h2>
+  <div class="panel">
+    <ul style="font-size:.92rem;padding-left:1.1rem;margin:0">
+      <li><a class="hero">Invoker</a>'ın çağrılan büyüleri, <a class="hero">Largo</a>'nun şarkıları ve <a class="hero">Kez</a>'in Sai yetenekleri için tek tek kısayol atanabiliyor.</li>
+      <li>Lycan kurtları ve yeni neutral creepler (Radigull, Odobenus Frostmage, Eimermole Foreman, Ancient Ogre Seal vb.) için birim yetenek kısayolları eklendi.</li>
+      <li>Görüşü engellenen birimler için siluet gösterme seçeneği.</li>
+      <li>Dota+ altın dökümünde <a class="item">Hand of Midas</a> ayrı kategori oldu.</li>
+      <li>İllüzyon oluşturma sırasında istemci performansı, hero ölümlerinde sunucu performansı iyileştirildi; birim davranış state machine'i yeniden yazıldı.</li>
+      <li>Hata düzeltmeleri: Meepo TP satma çökmesi, <a class="hero">Naga Siren</a>'in Mirror Image ile alakasız illüzyonları öldürmesi, <a class="hero">Oracle</a> Prognostication HUD konumu.</li>
+    </ul>
+  </div>
+</section>
+
+<footer id="kaynak">
+  <p><b>Kaynaklar:</b> <a href="https://www.dota2.com/patches/7.42" target="_blank" rel="noopener">Resmi 7.42 yama notları (dota2.com)</a> · <a href="https://www.dota2.com/newsentry/689773669992367212" target="_blank" rel="noopener">7.42 Gameplay Update duyurusu</a> · <a href="https://liquipedia.net/dota2/Version_7.42" target="_blank" rel="noopener">Liquipedia — Version 7.42</a> · <a href="https://teamsmurf.com/dota-2-patch-7-42-guide/" target="_blank" rel="noopener">Team Smurf 7.42 rehberi</a> · <a href="https://dota2proboosting.com/blog/dota-2-patch-7-42-changes-guide" target="_blank" rel="noopener">Dota2ProBoosting 7.42 özeti</a> · <a href="https://cybersport.metaratings.ru/articles/novyj-patch-7-42-v-dota-2-vse-detali" target="_blank" rel="noopener">CyberMeta 7.42</a></p>
+  <p>Hero bağlantıları dota2.com hero sayfalarına, item ve neutral item bağlantıları Liquipedia'ya gider. Sayılar, resmi notları derleyen yayınlardan alınmıştır; yama yayından sonra küçük düzeltmeler alabilir. Görseller bu sayfa için çizilmiş şemalardır; resmi hero/item görselleri bağlantılı sayfalarda.</p>
+</footer>
+</main>
+</div>
+
+<script>
+/* ---------- data ---------- */
+const KEY = [
+  {t:"200 temel can", d:"Temel can 120→200, Str başına can 22→20. Erken oyun daha az patlayıcı.", i:"heart"},
+  {t:"Büyüler zayıfladı", d:"Spell amp, cast range ve birçok ultimate hasarı düşürüldü.", i:"bolt"},
+  {t:"Item Potency", d:"İllüzyonlar artık çoğu on-hit item etkisini %20 gücüyle uyguluyor.", i:"copy"},
+  {t:"15:00 Tormentor", d:"Daha erken, mega creep çağıran Greater Horn ve 2. ölümden itibaren Shard düşürüyor.", i:"skull"},
+  {t:"Yeni ekonomi", d:"Sabit 90 altın/dk, yeni kill bounty formülü, herkese 50 XP/dk.", i:"coin"},
+  {t:"Harita değişti", d:"Twin Gates kenarlara, mid kuleleri kaydırıldı, kamplar tek tarafa ait.", i:"map"},
+  {t:"6 yeni item", d:"Caduceus, Starforge, Skypiercer, Sabatons... Javelin, Khanda, Helm of the Overlord gitti.", i:"gem"},
+  {t:"Neutral havuzları", d:"4 tier, her tier'da 4 havuz; 13 artifact kaldırıldı, Red Ledger geldi.", i:"box"}
+];
+const ICONS = {
+  heart:'<path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6C19 16.5 12 21 12 21z"/>',
+  bolt:'<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
+  copy:'<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M4 16V6a2 2 0 0 1 2-2h10"/>',
+  skull:'<path d="M12 3a8 8 0 0 0-8 8c0 3 1.5 4.5 3 5.5V20h10v-3.5c1.5-1 3-2.5 3-5.5a8 8 0 0 0-8-8z"/><circle cx="9" cy="11" r="1.6"/><circle cx="15" cy="11" r="1.6"/>',
+  coin:'<circle cx="12" cy="12" r="8"/><path d="M12 7v10M9 9.5h4.5a1.8 1.8 0 0 1 0 3.5h-3a1.8 1.8 0 0 0 0 3.5H15"/>',
+  map:'<path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/>',
+  gem:'<path d="M6 3h12l3 6-9 12L3 9z"/><path d="M3 9h18M12 21 8 9l4-6 4 6z"/>',
+  box:'<path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/>'
+};
+const NEW_ITEMS = [
+  {n:"Quarterstaff", c:"900", col:"#7a5a2e", tag:"Geri döndü", d:"+10 hasar, +10 saldırı hızı. Butterfly, MKB, Mask of Madness ve Maelstrom tariflerinde Javelin/Claymore'un yerini alıyor."},
+  {n:"Bloodslinger", c:"925", col:"#8e2418", r:"Sage's Mask + 2× Mantle of Intelligence + Blood Grenade + tarif", d:"+100 can, +8 Int. Aktif Sling Grenade: 300 alanda 50 hasar, 5 sn boyunca hasar ve %30→%15 yavaşlatma; 1.200 menzil, 75 can bedeli."},
+  {n:"Caduceus", c:"5.400", col:"#2f6f8e", r:"Force Staff + Phylactery + tarif", d:"Force Staff aktifi. Pasif Empower Spell: bir sonraki hedefli büyün düşmana +175 hasar ve %40 yavaşlatma, müttefike 200 iyileştirme ve hız veriyor."},
+  {n:"Ristul's Devotion", c:"3.800", col:"#6d2f8e", r:"Vladmir's Offering + Splintmail + Voodoo Mask", d:"1.200 yarıçaplı takım aurası: %20 lifesteal, %18 spell lifesteal, %18 bonus hasar, zırh ve mana regen."},
+  {n:"Sabatons of Mordiggian", c:"5.950", col:"#5a2b2b", r:"Phase Boots + Armlet of Mordiggian + tarif", d:"Bot ve Armlet tek slotta. Toggle saniyede 45 can yakarak +40 hasar, +30 Str, +5 zırh, birimlerin içinden geçme ve yavaşlama direnci veriyor; seni öldüremez."},
+  {n:"Skypiercer", c:"6.000", col:"#3b5f8e", r:"Heaven's Halberd + Sange + Talisman of Evasion + tarif", d:"+35 Str, %25 evasion, lifesteal. 3 sn Disarm aktifi; pasif Riposte yakında düşman hero varken Disarm cooldown'unu hızlandırıyor."},
+  {n:"Starforge", c:"6.000", col:"#8e6a1a", r:"Meteor Hammer + Ultimate Orb + tarif", d:"Güçlendirilmiş Meteor Hammer (175 mana, creeplere maks. canın %15'i). Pasif Celestial Flare: senin disable'ın biten düşmanları yakıyor ve yavaşlatıyor."}
+];
+const TIERS = [
+  {t:"Tier 1", at:"0:00", p:[["Chipped Vest","Ash Legion Shield","Possessed Mask"],["Dormant Curio","Red Ledger","Weighted Dice"],["Pollywog Charm","Seeds of Serenity","Forager's Kit"],["Kobold Cup","Stonefeather Satchel","Tumbler's Toy"]]},
+  {t:"Tier 2", at:"15:00", p:[["Psychic Headband","Safety Bubble","Metamorphic Mandible"],["Jidi Pollen Bag","Brick","Crippling Crossbow"],["Imp Claw","Gunpowder Gauntlets","Defiant Shell"],["Partisan's Brand","Spellslinger","Mana Draught"]]},
+  {t:"Tier 3", at:"30:00", p:[["Prophet's Pendulum","Dandelion Amulet","Idol of Scree'Auk"],["Balmhook","Rattlecage","Stormcrafter"],["Enchanter's Bauble","Ceremonial Robe","Harmonizer"],["Vile Phial","Serrated Shiv","Revenant's Brooch"]]},
+  {t:"Tier 4", at:"50:00", p:[["Fallen Sky","Flicker","Minotaur Horn"],["Mind Breaker","Divine Regalia","Witchbane"],["Helm of the Hivemind","Dezun Bloodrite","Conjurer's Catalyst"],["Giant's Ring","Book of the Dead","Riftshadow Prism"]]}
+];
+const NEW_NEUTRALS = new Set(["Red Ledger","Brick","Imp Claw","Helm of the Hivemind","Giant's Ring","Flicker","Mind Breaker","Revenant's Brooch","Vile Phial"]);
+const REMOVED_N = ["Dagger of Ristul","Duelist Gloves","Occult Bracelet","Essence Ring","Medallion of Courage","Poor Man's Shield","Searing Signet","Cloak of Flames","Flayer's Bota","Giant's Maul","Unrelenting Eye","Spider Legs","Stygian Desolator"];
+const REWORKS = [
+  {h:"Juggernaut", k:"rework", l:["Swiftslash kaldırıldı.","Blade Fury artık onu tamamen disarm ediyor ve basic dispel ile bitiyor.","Aghanim's Scepter: Blade Fury sırasında %75 hasar ve Potency ile saldırabiliyor.","Level 20 talent: Blade Fury cooldown −3 sn."]},
+  {h:"Meepo", k:"rework", l:["Artık <b>Universal</b> hero; temel hasar −9.","MegaMeepo kaldırıldı; Divided We Stand XP cezası yeniden düzenlendi.","Shard: bir Meepo'yu ya da dost creep'i kaldırıp fırlatma (Fling).","Dig Scepter'a taşındı, canın %50'sini yeniliyor."]},
+  {h:"Chaos Knight", k:"rework", l:["Fundamental Forging gitti; yeni innate <b>Ahead, Armageddon</b>: hareket ettikçe hız kazanır (saldırınca sıfırlanır).","Phantasm yaşarken global bir hücum (50 mana, 30 sn) onu ve illüzyonlarını taşır.","Phantasm illüzyonları %100 Item Potency ile vuruyor."]},
+  {h:"Lycan", k:"rework", l:["Apex Predator kaldırıldı.","Yeni innate <b>Pack Hunter</b>: düşmanları 6 sn işaretler, görünmez olsalar bile açığa çıkarır, aldıkları hasarı %5 artırır.","Wolf Bite yakın mesafede lifesteal'ini kaybediyor."]},
+  {h:"Beastmaster", k:"buff", l:["Drums of Slom kaldırıldı.","Scepter: 2.200 canlı <b>Ancient Thunderhide</b> çağırıyor (Slam 175 hasar + yavaşlatma).","Wild Axes 40–160 → 45–165; Summon Raptors CD 30 → 25 sn."]},
+  {h:"Chen", k:"rework", l:["Zealot innate'i Chen'in diriltebildiği güçlü bir creep-hero'ya dönüştü.","Holy Persuasion artık creeplere bonus hasar/hız vermiyor; creeplerini yanına ışınlayabiliyor.","Penitence 50–200 → 60–240."]},
+  {h:"Leshrac", k:"rework", l:["Nihilism artık 4 sn, 550 alanlı bir <b>disarm</b>; süre boyunca düşmanları ve kendini dispel ediyor (125 mana, 25 sn).","Artık ethereal yapmıyor."]},
+  {h:"Nature's Prophet", k:"rework", l:["Curse of the Oldgrowth pasif oldu: saldırılar saniyede 24 hasar ve %12 yavaşlatma stack'liyor (Treant'lar yarısı).","Teleportation bariyeri kalktı; CD 65/50/35/20 → 80/60/40/20 sn."]},
+  {h:"Nyx Assassin", k:"rework", l:["Mana Burn innate'i kalktı; yeni <b>Scarab Metabolism</b>: 3 sn hasar almazsa hız ve regen.","Impale stun 1,1–2 → 1,25–2 sn.","Burrow cast range bonusu ve carapace yarıçapı azaldı."]},
+  {h:"Death Prophet", k:"rework", l:["Saldırı menzili 600 → 500, temel hasar −4, hız 290 → 295.","Witchcraft: her saldırıda hasar veren ve onu iyileştiren bir hayalet; cooldown azaltma yok.","Crypt Swarm'a Shard yükseltmesi."]},
+  {h:"Phantom Assassin", k:"rework", l:["Blur: 600 birim (önceden 500) dışındaki düşmanlara görünmez, True Sight'a bağışık; süre 30 → 20 sn, 40 mana.","Immaterial evasion %25–55 → %20–50."]},
+  {h:"Kez", k:"nerf", l:["Echo Slash hasarı %70–100 → %30–75, ek olarak 40–130 temel hasar; hero'lara bonus yok.","Raptor Dance sabit hasarlı saldırılar yapıyor: on-hit tetikler ama cleave yapmaz."]},
+  {h:"Shadow Fiend", k:"rework", l:["Shadowraze stack bonusu 35–80 → 20–80.","Requiem artık büyü direnci düşürmüyor; korku/yavaşlatma 1,2–1,8 sn + ruh başına 0,1 sn (önceden 0,6).","Presence of the Dark Lord düşman büyü direncini %4–10 düşürüyor."]},
+  {h:"Pugna", k:"rework", l:["Agi 21 → 16, Int 27 → 29, menzil 630 → 600.","Life Drain birden fazla hedefe bağlanabiliyor.","Nether Ward'ın canı 3–6 pip."]},
+  {h:"Abaddon", k:"rework", l:["Withering Mist her zaman iyileştirmeyi azaltıyor (%40 + seviye başına %1'e kadar).","Mist Coil düşmanı %60 yavaşlatıyor ya da müttefiki hızlandırıyor; Scepter ile güçleniyor.","Borrowed Time Scepter yükseltmesini kaybetti."]},
+  {h:"Batrider", k:"buff", l:["Sticky Napalm: cast başına 1 stack, maks. 10, 4 sn CD, stack başına 6/12/18/24 hasar."]},
+  {h:"Broodmother", k:"buff", l:["Spider's Milk iyileştirmesi %1,9 → %2,9, yarıçap 600 → 900; birimlerinin kill'leriyle de tetikleniyor.","Spiderling hasarı 18,5/24,5/30,5, temel saldırı süresi 1,6."]},
+  {h:"Venomancer", k:"rework", l:["Plague Ward'lar doğunca en yakın hero'ya saldırıyor ve yarı güçte Poison Sting uyguluyor.","Noxious Plague dispel edilemiyor."]}
+];
+const BUFFS = [
+  ["Queen of Pain","Succubus lifesteal %2–14 → %3–17."],
+  ["Disruptor","Kinetic Fence 70 → 50 mana, CD 14 → 12 sn, 0,5 sn'de oluşuyor; Kinetic Field'a Shard."],
+  ["Shadow Demon","Demonic Cleanse CD 60 → 40 sn."],
+  ["Treant Protector","Leech Seed 35 → 20 mana."],
+  ["Mars","God's Rebuke CD 14/12/10/8 sn; kritik %160–280."],
+  ["Monkey King","Boundless Strike stun 0,75–1,5 sn, CD 24/20/16/12 sn (kritik çarpanı düştü)."],
+  ["Lich","Sacrifice 2 → 3 şarj; Frost Blast menzili her seviyede 650."],
+  ["Tidehunter","Leviathan's Catch balık başına 3 → 5 can; toplama yarıçapı 220 → 275."],
+  ["Clockwerk","Overclocking daha ucuz, cooldown'u daha kısa."],
+  ["Marci","Daha fazla Agi, Special Delivery CD kısa, Bodyguard bariyeri büyük."],
+  ["Dazzle","Nothl Projection minimum süresi 5 → 1 sn; Shard ile Through the Realm."],
+  ["Alchemist","Greevil's Greed bonusu 20'ye çıktı; Berserk Potion 75 mana ve pozitif etkisi dispel edilemez."],
+  ["Bristleback","Temel hasar +3; Viscous Nasal Goo zırh düşürmesi yeniden şekillendi."],
+  ["Pangolier","Swashbuckle: 3×35–125 yerine 4×25–100 kesik, %60 Potency."]
+];
+const NERFS = [
+  ["Lina","Laguna Blade 400/580/760 → 360/525/690; Flame Cloak spell amp %35 → %30."],
+  ["Lion","Finger of Death 600/725/850 → 570/685/800; kill başına 25 → 20."],
+  ["Enigma","Black Hole saniyede 100/150/200 → 90/135/180."],
+  ["Invoker","Sun Strike maks. 575 → 495; Chaos Meteor yanması 10–50 → 12–44/sn."],
+  ["Outworld Destroyer","Sanity's Eclipse temel 200/300/400 → 180/270/360."],
+  ["Skywrath Mage","Mystic Flare 800/1200/1600 → 800/1125/1450."],
+  ["Hoodwink","Sharpshooter maks. 1350 → 1200; Bushwhack menzili 1100 → 1000."],
+  ["Ancient Apparition","Ice Blast çarpma hasarı 250/325/450 → 200/300/400 (AA'nın kitinin geri kalanı da yeniden düzenlendi)."],
+  ["Medusa","Gorgon's Grasp fiziksel → büyü hasarı; DoT 12/24/36/48."],
+  ["Oracle","False Promise 100/150/200 → 125/175/225 mana."],
+  ["Techies","Proximity Mines 110/140/170 → 125/175/225 mana; Sticky Bomb 2 → 1,5 sn'de patlıyor."],
+  ["Bounty Hunter","Shadow Walk daha yavaş, stun daha kısa."]
+];
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const NS = "http://www.w3.org/2000/svg";
+function heroLink(n){return `<a class="hero">${n}</a>`}
+function itemLink(n){return `<a class="item">${n}</a>`}
+function initials(n){return n.replace(/['’]/g,"").split(/[\s-]+/).filter(w=>!/^(of|the)$/i.test(w)).map(w=>w[0]).join("").slice(0,2).toUpperCase()}
+function hexAvatar(n,k){
+  const col = {rework:"#a981f0",buff:"#4cc38a",nerf:"#ff7b6b"}[k]||"#e3b456";
+  return `<svg viewBox="0 0 60 60" width="80" height="45"><defs><linearGradient id="g${initials(n)}${k}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".55"/><stop offset="1" stop-color="#151920"/></linearGradient></defs><path d="M30 3 54 16.5v27L30 57 6 43.5v-27z" fill="url(#g${initials(n)}${k})" stroke="${col}" stroke-width="2"/><text x="30" y="36" text-anchor="middle" font-family="Cinzel" font-weight="800" font-size="17" fill="#fff">${initials(n)}</text></svg>`;
+}
+
+const CDN="https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/";
+const HERO_ID={"Nature's Prophet":"furion","Shadow Fiend":"nevermore","Queen of Pain":"queenofpain","Treant Protector":"treant","Clockwerk":"rattletrap","Outworld Destroyer":"obsidian_destroyer","Windranger":"windrunner","Io":"wisp","Necrophos":"necrolyte","Zeus":"zuus","Lifestealer":"life_stealer","Underlord":"abyssal_underlord","Doom":"doom_bringer","Magnus":"magnataur","Timbersaw":"shredder","Wraith King":"skeleton_king","Vengeful Spirit":"vengefulspirit","Anti-Mage":"antimage","Centaur Warrunner":"centaur"};
+const ITEM_ID={"Quarterstaff":"quarterstaff","Khanda":"angels_demise","Javelin":"javelin","Helm of the Overlord":"helm_of_the_overlord"};
+const heroId=n=>HERO_ID[n]||n.toLowerCase().replace(/['’]/g,"").replace(/[\s-]+/g,"_");
+const IMG_ERR='onerror="this.remove()" loading="lazy" referrerpolicy="no-referrer"';
+function heroPic(n){return `<img src="${CDN}heroes/${heroId(n)}.png" alt="" ${IMG_ERR}>`}
+function heroSmall(n){return `<span class="pic sm"><span class="bd">${initials(n)}</span>${heroPic(n)}</span>`}
+function itemPic(n){const id=ITEM_ID[n];return id?`<img src="${CDN}items/${id}.png" alt="" ${IMG_ERR}>`:""}
+/* ---------- render content ---------- */
+$("#keycards").innerHTML = KEY.map(k=>`<div class="kc"><div class="ico"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#ff8a78" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS[k.i]}</svg></div><h4>${k.t}</h4><p>${k.d}</p></div>`).join("");
+
+$("#newitems").innerHTML = NEW_ITEMS.map(it=>`<div class="itm"><div class="ic" style="background:linear-gradient(135deg,${it.col},#111)">${initials(it.n)}${itemPic(it.n)}</div><div><h4>${itemLink(it.n)} <span class="pill new">${it.tag||"Yeni"}</span></h4><div class="cost">◆ ${it.c} altın</div><p>${it.d}</p>${it.r?`<div class="rec">Tarif: ${it.r.split(" + ").map(p=>/tarif|^\d/.test(p)?p:p.replace(/^(\d×\s)?(.*)$/,(m,a,b)=>(a||"")+itemLink(b))).join(" + ")}</div>`:""}</div></div>`).join("");
+
+$("#tiers").innerHTML = TIERS.map(t=>`<div class="tier"><header>${t.t}<span>${t.at}'da açılır</span></header><div class="pools">${t.p.map((p,i)=>`<div class="pool"><small>Havuz ${i+1}</small>${p.map(x=>itemLink(x)+(NEW_NEUTRALS.has(x)?' <span class="pill new" style="font-size:.62rem">yeni/dönüş</span>':'')).join("")}</div>`).join("")}</div></div>`).join("");
+$("#removedNeutrals").innerHTML = REMOVED_N.map(n=>`<span class="chip">${itemLink(n)}</span>`).join("");
+
+const tagTxt = {rework:"Rework",buff:"Buff",nerf:"Nerf"};
+$("#reworks").innerHTML = REWORKS.map(r=>`<div class="hc"><div class="av"><span class="pic">${hexAvatar(r.h,r.k)}${heroPic(r.h)}</span></div><div><h4>${heroLink(r.h)} <span class="pill ${r.k}">${tagTxt[r.k]}</span></h4><ul>${r.l.map(x=>`<li>${x}</li>`).join("")}</ul></div></div>`).join("");
+const row = ([h,d]) => `<div style="display:flex;gap:.6rem;padding:.45rem 0;border-bottom:1px solid var(--line);font-size:.9rem"><div style="min-width:190px;display:flex;align-items:center">${heroSmall(h)}${heroLink(h)}</div><div style="color:#c3c8d2">${d}</div></div>`;
+$("#buffs").innerHTML = BUFFS.map(row).join("");
+$("#nerfs").innerHTML = NERFS.map(row).join("");
+
+/* ---------- charts ---------- */
+function lineChart(el, series, o){
+  const W=520,H=290,m={l:48,r:14,t:14,b:36};
+  const iw=W-m.l-m.r, ih=H-m.t-m.b;
+  const x=v=>m.l+(v-o.x0)/(o.x1-o.x0)*iw, y=v=>m.t+ih-(v-o.y0)/(o.y1-o.y0)*ih;
+  let s=`<svg viewBox="0 0 ${W} ${H}">`;
+  for(const t of o.yt){s+=`<line x1="${m.l}" x2="${W-m.r}" y1="${y(t)}" y2="${y(t)}" stroke="#2a313d"/><text x="${m.l-6}" y="${y(t)+4}" fill="#9aa3b2" font-size="11" text-anchor="end">${t.toLocaleString("tr-TR")}</text>`}
+  for(const t of o.xt){s+=`<text x="${x(t)}" y="${H-16}" fill="#9aa3b2" font-size="11" text-anchor="middle">${t}</text>`}
+  s+=`<text x="${m.l+iw/2}" y="${H-2}" fill="#9aa3b2" font-size="11" text-anchor="middle">${o.xl}</text>`;
+  if(o.mark){s+=`<line x1="${x(o.mark.x)}" x2="${x(o.mark.x)}" y1="${m.t}" y2="${m.t+ih}" stroke="#e3b456" stroke-dasharray="4 4" opacity=".7"/><text x="${x(o.mark.x)+6}" y="${m.t+14}" fill="#e3b456" font-size="11">${o.mark.t}</text>`}
+  for(const se of series){
+    const pts=[];for(let v=o.x0;v<=o.x1;v+=o.step)pts.push(`${x(v).toFixed(1)},${y(se.f(v)).toFixed(1)}`);
+    s+=`<polyline points="${pts.join(" ")}" fill="none" stroke="${se.c}" stroke-width="3" stroke-linecap="round"/>`;
+  }
+  if(o.dots)for(const d of o.dots){s+=`<circle cx="${x(d.x)}" cy="${y(d.y)}" r="4" fill="${d.c}"/><text x="${x(d.x)+(d.dx||6)}" y="${y(d.y)+(d.dy||-8)}" fill="${d.c}" font-size="11" font-weight="600" text-anchor="${d.a||'start'}">${d.t}</text>`}
+  el.innerHTML=s+"</svg>";
+}
+lineChart($("#hpChart"),[{f:s=>120+22*s,c:"#6b7383"},{f:s=>200+20*s,c:"#d0412f"}],
+  {x0:0,x1:120,step:2,y0:0,y1:2800,yt:[0,700,1400,2100,2800],xt:[0,20,40,60,80,100,120],xl:"Toplam Strength",mark:{x:40,t:"kesişim: 40 Str"},
+   dots:[{x:20,y:600,c:"#d0412f",t:"20 Str: 560→600",dy:-10,a:"start"},{x:100,y:2200,c:"#d0412f",t:"100 Str: 2.320→2.200",a:"end",dx:-6,dy:22}]});
+lineChart($("#bountyChart"),[{f:l=>125+8*l,c:"#6b7383"},{f:l=>100+10*l,c:"#e3b456"}],
+  {x0:1,x1:30,step:1,y0:100,y1:420,yt:[100,180,260,340,420],xt:[1,5,10,15,20,25,30],xl:"Ölen hero'nun seviyesi",mark:{x:12.5,t:"~12,5"},
+   dots:[{x:5,y:150,c:"#e3b456",t:"150",dy:18},{x:30,y:400,c:"#e3b456",t:"400",a:"end",dx:-8}]});
+
+function hbar(el, data, o){
+  const W=520,rowH=o.rowH||26,m={l:o.l||170,r:56,t:6};
+  const H=m.t+data.length*rowH+20, iw=W-m.l-m.r;
+  let s=`<svg viewBox="0 0 ${W} ${H}">`;
+  data.forEach((d,i)=>{
+    const yy=m.t+i*rowH;
+    s+=`<text x="${m.l-8}" y="${yy+rowH/2+4}" fill="#e6e8ec" font-size="11.5" text-anchor="end">${d.n}</text>`;
+    if(d.old!=null){s+=`<rect x="${m.l}" y="${yy+3}" width="${iw*d.old/o.max}" height="${rowH/2-3}" rx="3" fill="#6b7383"/>`;
+      s+=`<rect x="${m.l}" y="${yy+rowH/2}" width="${iw*d.v/o.max}" height="${rowH/2-3}" rx="3" fill="${o.c}"/>`;
+      s+=`<text x="${m.l+iw*d.old/o.max+6}" y="${yy+rowH/2-1}" fill="#9aa3b2" font-size="10.5">${d.old}</text><text x="${m.l+iw*d.v/o.max+6}" y="${yy+rowH-4}" fill="#fff" font-size="10.5" font-weight="700">${d.v}</text>`;
+    } else {
+      s+=`<rect x="${m.l}" y="${yy+5}" width="${iw*d.v/o.max}" height="${rowH-10}" rx="4" fill="${d.c||o.c}"/><text x="${m.l+iw*d.v/o.max+6}" y="${yy+rowH/2+4}" fill="#fff" font-size="11" font-weight="700">%${d.v}</text>`;
+    }
+  });
+  el.innerHTML=s+"</svg>";
+}
+hbar($("#potChart"),[
+  {n:"Hero saldırısı (varsayılan)",v:100,c:"#d0412f"},{n:"Chaos Knight Phantasm",v:100,c:"#d0412f"},
+  {n:"Ember Spirit Sleight of Fist",v:80},{n:"Windranger Focus Fire",v:75},{n:"Pangolier Swashbuckle",v:60},{n:"Sand King Stinger",v:60},
+  {n:"Illusion Rune illüzyonu",v:40},{n:"Spectre Haunt",v:40},{n:"Manta Style illüzyonu",v:35},{n:"Terrorblade Reflection",v:25},{n:"Diğer illüzyonlar",v:20,c:"#6b7383"}
+],{max:100,c:"#5aa2f0",l:190});
+hbar($("#spellChart"),[
+  {n:"Skywrath · Mystic Flare",old:1600,v:1450},{n:"Hoodwink · Sharpshooter",old:1350,v:1200},{n:"Lion · Finger of Death",old:850,v:800},
+  {n:"Lina · Laguna Blade",old:760,v:690},{n:"Kunkka · Ghostship",old:600,v:550},{n:"Invoker · Sun Strike",old:575,v:495},{n:"OD · Sanity's Eclipse (temel)",old:400,v:360}
+],{max:1700,c:"#5aa2f0",rowH:34,l:180});
+
+/* timeline */
+(function(){
+  const W=1000,H=210,m={l:20,r:20}; const iw=W-m.l-m.r; const x=t=>m.l+t/70*iw;
+  const ev=[
+    {t:0,l:"Neutral T1",r:0,c:"#a981f0"},{t:15,l:"Neutral T2",r:0,c:"#a981f0"},{t:30,l:"Neutral T3",r:0,c:"#a981f0"},{t:50,l:"Neutral T4",r:0,c:"#a981f0"},{t:65,l:"Sonsuz Madstone",r:0,c:"#a981f0"},
+    {t:15,l:"İlk Tormentor (önce 20:00)",r:1,c:"#e3b456"},{t:30,l:"Her dalgada Flagbearer",r:2,c:"#d0412f"},{t:35,l:"Ek ranged creep (önce 40:00)",r:1,c:"#d0412f"},{t:60,l:"2× siege creep",r:2,c:"#d0412f"}
+  ];
+  let s=`<svg viewBox="0 0 ${W} ${H}"><line x1="${m.l}" x2="${W-m.r}" y1="60" y2="60" stroke="#2a313d" stroke-width="6" stroke-linecap="round"/>`;
+  s+=`<line x1="${x(20)}" x2="${x(15)+6}" y1="40" y2="40" stroke="#e3b456" stroke-width="1.5" stroke-dasharray="3 3"/><circle cx="${x(20)}" cy="40" r="4" fill="none" stroke="#9aa3b2"/>`;
+  for(let t=0;t<=70;t+=10)s+=`<text x="${x(t)}" y="35" fill="#9aa3b2" font-size="12" text-anchor="middle" dy="-8">${t}:00</text>`;
+  const rows=[0,110,160], used={};
+  ev.forEach(e=>{
+    const yy = e.r===0?90:rows[e.r];
+    s+=`<line x1="${x(e.t)}" x2="${x(e.t)}" y1="60" y2="${yy-12}" stroke="${e.c}" stroke-width="1.5" opacity=".7"/><circle cx="${x(e.t)}" cy="60" r="7" fill="${e.c}" stroke="#0d0f13" stroke-width="2"/>`;
+    const anchor = e.t>58?"end":(e.t<3?"start":"middle");
+    s+=`<text x="${x(e.t)}" y="${yy}" fill="${e.c}" font-size="12.5" font-weight="600" text-anchor="${anchor}">${e.l}</text>`;
+  });
+  s+=`<text x="${x(70)}" y="${H-6}" fill="#9aa3b2" font-size="11" text-anchor="end">Ayrıca: Roshan'ın yeniden doğuşu her ölümde 1 dk kısalır (min. 5 dk) · Siege 30:00'dan itibaren 2,5 dakikada bir</text>`;
+  $("#timeline").innerHTML=s+"</svg>";
+})();
+
+/* neutral tier chart */
+(function(){
+  const W=520,H=150,m={l:20,r:20},iw=W-m.l-m.r,x=t=>m.l+t/70*iw;
+  const old=[[0,"T1"],[15,"T2"],[25,"T3"],[35,"T4"],[60,"T5"]];
+  const nw=[[0,"T1"],[15,"T2"],[30,"T3"],[50,"T4"],[65,"∞"]];
+  let s=`<svg viewBox="0 0 ${W} ${H}">`;
+  s+=`<text x="${m.l}" y="22" fill="#9aa3b2" font-size="11">7.42</text><line x1="${m.l}" x2="${W-m.r}" y1="45" y2="45" stroke="#2a313d" stroke-width="5"/>`;
+  nw.forEach(([t,l])=>{s+=`<circle cx="${x(t)}" cy="45" r="13" fill="#a981f0"/><text x="${x(t)}" y="49" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">${l}</text><text x="${x(t)}" y="75" text-anchor="middle" font-size="10.5" fill="#c6a9ff">${t}:00</text>`});
+  s+=`<text x="${m.l}" y="${H-30}" fill="#6b7383" font-size="10.5">karşılaştırma için 5 tier'lı eski sistem (yaklaşık)</text>`;
+  s+=`<line x1="${m.l}" x2="${W-m.r}" y1="${H-14}" y2="${H-14}" stroke="#2a313d" stroke-width="3"/>`;
+  old.forEach(([t,l])=>{s+=`<circle cx="${x(t)}" cy="${H-14}" r="8" fill="#3a404c"/><text x="${x(t)}" y="${H-10.5}" text-anchor="middle" font-size="8.5" fill="#bbb">${l}</text>`});
+  $("#tierChart").innerHTML=s+"</svg>";
+})();
+
+/* ---------- links ---------- */
+document.querySelectorAll("a.hero").forEach(a=>{
+  const n=a.dataset.n||a.textContent.trim();
+  a.href="https://www.dota2.com/hero/"+n.toLowerCase().replace(/[^a-z]/g,"");
+  a.target="_blank";a.rel="noopener";a.title=n+" — dota2.com";
+});
+document.querySelectorAll("a.item").forEach(a=>{
+  const n=(a.dataset.n||a.textContent.trim()).replace(/\s+/g,"_");
+  a.href="https://liquipedia.net/dota2/"+encodeURI(n).replace(/'/g,"%27");
+  a.target="_blank";a.rel="noopener";a.title=a.textContent.trim()+" — Liquipedia";
+});
+</script>
+</body>
+</html>
