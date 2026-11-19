@@ -277,7 +277,12 @@ renderGrid();renderNav();updateProgress();
 <script>
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js").catch(err => {
+    // Yeni service worker kontrolü devraldığında sayfayı bir kez yenile (eski önbellekte takılı kalmasın)
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (reloaded) return; reloaded = true; window.location.reload();
+    });
+    navigator.serviceWorker.register("./sw.js", { updateViaCache: "none" }).then(reg => reg.update()).catch(err => {
       console.error("Service worker registration failed:", err);
     });
   });
