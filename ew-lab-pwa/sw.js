@@ -1,12 +1,9 @@
-const CACHE_NAME = "ew-lab-academy-v10";
+const CACHE_NAME = "ew-lab-academy-v11";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
-  "./dota2-742.html",
-  "./dota2-742-tr.html",
   "./PDW.html",
-  "./assets/dota2-logo.png",
   "./icons/icon-192.png",
   "./icons/icon-512.png"
 ];
